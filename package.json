@@ -10,10 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.1.13",
+    "firebase": "^12.2.1",
+    "gpxparser": "^3.0.8",
+    "leaflet": "^1.9.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "tailwindcss": "^4.1.13"
+    "react-hook-form": "^7.62.0",
+    "react-leaflet": "^5.0.0",
+    "react-router-dom": "^7.9.1",
+    "tailwindcss": "^4.1.13",
+    "zod": "^4.1.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
