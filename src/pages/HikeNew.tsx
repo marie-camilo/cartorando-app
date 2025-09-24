@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import type { SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { addDoc, collection, serverTimestamp, doc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, serverTimestamp, doc,setDoc, updateDoc } from 'firebase/firestore'
 import { db, storage } from '../lib/firebase'
 import { useAuth } from '../firebase/auth'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
@@ -81,7 +81,6 @@ export default function HikeNew() {
                     updatedAt: serverTimestamp()
                 })
             }
-
             alert('Randonnée créée avec succès !')
         } catch (e) {
             console.error(e)

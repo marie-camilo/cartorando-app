@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { auth, googleProvider } from "../lib/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, User, signOut, updateProfile } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    User,
+    signOut,
+    updateProfile
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { addUserToFirestore } from "../utils/firestoreUtils";
 import Button from "../components/Button";
@@ -19,9 +26,11 @@ export default function LogIn() {
     const handleGoogleSignIn = async () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
-            console.log("Utilisateur Google :", result.user.displayName, result.user.email);
-            await addUserToFirestore(result.user);
-            setUser(result.user);
+            const user = result.user;
+            console.log("Utilisateur Google :", user.displayName, user.email);
+            // Assurer un displayName correct
+            await addUserToFirestore(user, user.displayName || undefined);
+            setUser(user);
             navigate("/dashboard");
         } catch (err) {
             console.error("Erreur lors de la connexion avec Google :", err);
@@ -41,18 +50,28 @@ export default function LogIn() {
         setError("");
         try {
             let userCredential;
+
             if (isSignUp) {
+                // Inscription
                 console.log("Inscription avec nom :", name, "email :", email);
                 userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
+
                 // Mettre à jour le displayName dans Firebase Auth
                 await updateProfile(user, { displayName: name });
+
+                // Ajouter utilisateur dans Firestore avec nom
                 await addUserToFirestore(user, name);
             } else {
+                // Connexion
                 console.log("Connexion avec email :", email);
                 userCredential = await signInWithEmailAndPassword(auth, email, password);
-                await addUserToFirestore(userCredential.user);
+                const user = userCredential.user;
+
+                // Ajouter utilisateur dans Firestore, en s'assurant qu'il ait un displayName
+                await addUserToFirestore(user, user.displayName || undefined);
             }
+
             const user = userCredential.user;
             setUser(user);
             navigate("/dashboard");
@@ -62,12 +81,11 @@ export default function LogIn() {
     };
 
     return (
-      <div className="flex items-center justify-center p-4 bg-[var(--white)]">
-          <div className="flex flex-col md:flex-row w-full max-w-6xl h-[80vh] bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="flex items-center justify-center min-h-screen bg-[var(--white)] p-4">
+          <div className="flex flex-col md:flex-row w-full max-w-6xl h-auto md:h-[80vh] bg-white rounded-2xl shadow-2xl overflow-hidden">
               <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center overflow-y-auto">
                   {user ? (
                     <div className="text-center">
-                        <h1 className="text-2xl font-bold mb-6">Bienvenue 🎉</h1>
                         <p className="mb-4">Connecté : {user.displayName || user.email}</p>
                         <Button onClick={handleSignOut} className="w-full">
                             Se déconnecter

@@ -5,7 +5,7 @@ interface HikeCardProps {
   title: string
   image?: string
   difficulty: 'easy' | 'moderate' | 'hard'
-  region?: string // Rendre "region" optionnelle
+  region?: string
 }
 
 export default function HikeCard({ id, title, image, difficulty, region }: HikeCardProps) {

@@ -23,12 +23,12 @@ export default function HikeList() {
   }, [])
 
   return (
-    <div className="px-4 py-8 bg-[var(--white)] min-h-screen">
-      <h1 className="text-3xl font-medium mb-8 text-[var(--dark)]">
+    <div className="px-4 py-8 bg-[var(--white)] min-h-screen max-w-7xl mx-auto content-center">
+      <h1 className="text-3xl font-medium mb-8 text-[var(--dark)] text-center">
         Des <span className="text-[var(--orange)]">randonnées</span> autour de chez vous !
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
         {hikes.map(h => (
           <HikeCard
             key={h.id}
