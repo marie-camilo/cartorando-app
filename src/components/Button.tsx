@@ -6,7 +6,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button({children, variant = 'green', ...props}: ButtonProps) {
-    const baseClasses = "flex items-center justify-center text-white font-semibold py-2 px-4 rounded-xl transition-colors duration-200 cursor-pointer"
+    const baseClasses = "flex items-center justify-center text-white text-sm font-medium py-1 px-3 rounded-2xl transition-colors duration-200 cursor-pointer"
     const colorClasses = variant === 'green'
         ? "bg-[var(--green-moss)] hover:bg-[#766c3d]"
         : variant === 'orange'

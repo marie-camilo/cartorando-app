@@ -41,28 +41,28 @@ export default function HikeView() {
         }
 
         const unsubHike = onSnapshot(
-            doc(db, 'hikes', id),
-            (d: DocumentSnapshot<DocumentData>) => {
-                if (d.exists()) setHike({ id: d.id, ...(d.data() as Omit<Hike, 'id'>) })
-                else setError('Randonnée introuvable')
-                setLoading(false)
-            },
-            err => {
-                console.error(err)
-                setError('Erreur lors du chargement de la randonnée')
-                setLoading(false)
-            }
+          doc(db, 'hikes', id),
+          (d: DocumentSnapshot<DocumentData>) => {
+              if (d.exists()) setHike({ id: d.id, ...(d.data() as Omit<Hike, 'id'>) })
+              else setError('Randonnée introuvable')
+              setLoading(false)
+          },
+          err => {
+              console.error(err)
+              setError('Erreur lors du chargement de la randonnée')
+              setLoading(false)
+          }
         )
 
         const q = query(collection(db, 'hikes', id, 'comments'), orderBy('createdAt', 'asc'))
         const unsubComments = onSnapshot(
-            q,
-            (snap: QuerySnapshot<DocumentData>) => {
-                setComments(
-                    snap.docs.map(d => ({ id: d.id, ...(d.data() as Omit<Comment, 'id'>) }))
-                )
-            },
-            err => console.error(err)
+          q,
+          (snap: QuerySnapshot<DocumentData>) => {
+              setComments(
+                snap.docs.map(d => ({ id: d.id, ...(d.data() as Omit<Comment, 'id'>) }))
+              )
+          },
+          err => console.error(err)
         )
 
         return () => {
@@ -93,16 +93,25 @@ export default function HikeView() {
     if (error) return <p className="text-red-500">{error}</p>
     if (!hike) return <p>Randonnée introuvable</p>
 
-    return (
-        <div className="space-y-4">
-            <h1 className="text-2xl font-bold">{hike.title}</h1>
-            <p className="text-gray-700">{hike.description}</p>
-            <p className="text-sm">
-                {hike.region} • {hike.difficulty} • {hike.distanceKm} km • +{hike.elevationGainM} m
-            </p>
+    const difficultyColors: Record<Hike['difficulty'], string> = {
+        easy: 'bg-[var(--green)]',
+        moderate: 'bg-[var(--yellow)]',
+        hard: 'bg-[var(--red)]',
+    }
 
-            <CommentsSection comments={comments} onSubmit={addComment} canComment={!!user} />
-        </div>
+    return (
+      <div className="space-y-4">
+          <h1 className="text-2xl font-bold">{hike.title}</h1>
+          <p className="text-gray-700">{hike.description}</p>
+          <div className="flex items-center space-x-2 text-sm">
+              <p>{hike.region} • {hike.distanceKm} km • +{hike.elevationGainM} m</p>
+              <span className={`px-3 py-1 text-xs font-semibold text-white rounded-full ${difficultyColors[hike.difficulty]}`}>
+                    {hike.difficulty === 'easy' ? 'Facile' : hike.difficulty === 'moderate' ? 'Modérée' : 'Difficile'}
+                </span>
+          </div>
+
+          <CommentsSection comments={comments} onSubmit={addComment} canComment={!!user} />
+      </div>
     )
 }
 
@@ -114,33 +123,33 @@ interface CommentsSectionProps {
 
 function CommentsSection({ comments, onSubmit, canComment }: CommentsSectionProps) {
     return (
-        <div className="space-y-2">
-            <h3 className="font-semibold">Commentaires</h3>
-            {comments.length > 0 ? (
-                <ul className="space-y-1">
-                    {comments.map(c => (
-                        <li key={c.id} className="border p-2 rounded">
-                            <p className="text-sm">{c.text}</p>
-                            <p className="text-xs text-gray-500">par {c.authorName}</p>
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p className="text-gray-500 text-sm">Aucun commentaire pour le moment</p>
-            )}
-            {canComment && (
-                <form onSubmit={onSubmit} className="flex gap-2">
-                    <input
-                        name="text"
-                        placeholder="Ajouter un commentaire…"
-                        className="flex-1 input"
-                        required
-                        minLength={1}
-                        maxLength={500}
-                    />
-                    <button type="submit" className="btn">Envoyer</button>
-                </form>
-            )}
-        </div>
+      <div className="space-y-2">
+          <h3 className="font-semibold">Commentaires</h3>
+          {comments.length > 0 ? (
+            <ul className="space-y-1">
+                {comments.map(c => (
+                  <li key={c.id} className="border p-2 rounded">
+                      <p className="text-sm">{c.text}</p>
+                      <p className="text-xs text-gray-500">par {c.authorName}</p>
+                  </li>
+                ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500 text-sm">Aucun commentaire pour le moment</p>
+          )}
+          {canComment && (
+            <form onSubmit={onSubmit} className="flex gap-2">
+                <input
+                  name="text"
+                  placeholder="Ajouter un commentaire…"
+                  className="flex-1 input"
+                  required
+                  minLength={1}
+                  maxLength={500}
+                />
+                <button type="submit" className="btn">Envoyer</button>
+            </form>
+          )}
+      </div>
     )
 }

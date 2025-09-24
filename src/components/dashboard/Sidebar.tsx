@@ -23,7 +23,6 @@ export default function Sidebar() {
                 <span className="font-medium text-xl">{user?.displayName || user?.email?.split("@")[0]}</span>
             </div>
 
-            {/* Liens */}
             <nav className="flex flex-col gap-3 mt-6">
                 {links.map((link) => (
                     <NavLink
