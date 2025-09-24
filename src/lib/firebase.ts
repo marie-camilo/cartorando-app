@@ -5,12 +5,12 @@ import { getStorage } from "firebase/storage"
 
 // Configurer Firebase à partir des variables d'environnement
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FB_API_KEY,
-    authDomain: import.meta.env.VITE_FB_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_FB_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FB_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FB_MSG_SENDER_ID,
-    appId: import.meta.env.VITE_FB_APP_ID
+    apiKey: "AIzaSyDVKAzBs_9Gp31ZnpaEM3b99XdMGOu9A3Q",
+    authDomain: "cartorando-98fd5.firebaseapp.com",
+    projectId: "cartorando-98fd5",
+    storageBucket: "cartorando-98fd5.firebasestorage.app",
+    messagingSenderId: "198397907457",
+    appId: "1:198397907457:web:04aedbde8a85d76dc92600"
 }
 
 // Initialiser Firebase

@@ -15,7 +15,7 @@ export default function Header() {
     return (
         <header className="app-header flex justify-between items-center px-6 py-4">
             <h1 className="logo font-bold text-sm">
-                <Link to="/">CartoRando</Link>
+                <Link to="/">cartorando</Link>
             </h1>
 
             <div className="header-right flex items-center gap-4">
@@ -46,21 +46,13 @@ export default function Header() {
                             <div
                                 className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden z-20">
                                 <Link
-                                    to="/profile"
+                                    to="/dashboard"
                                     className="block px-4 py-3 text-gray-700 hover:bg-gray-50"
                                     onClick={() => setOpen(false)}
                                 >
                                     Mon profil
                                 </Link>
-                                <button
-                                    onClick={() => {
-                                        signOutUser();
-                                        setOpen(false);
-                                    }}
-                                    className="w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-50"
-                                >
-                                    Se déconnecter
-                                </button>
+                                <button onClick={() => {signOutUser();setOpen(false);}} className="w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-50"> Se déconnecter</button>
                             </div>
                         )}
                     </div>

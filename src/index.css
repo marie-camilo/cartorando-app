@@ -21,7 +21,7 @@
 }
 
 body {
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     background-color: var(--white);
     color: #2E2E2E;
     margin: 0;
@@ -60,7 +60,7 @@ main {
 
 h1, h2, h3 {
     color: #2E2E2E;
-    font-family: NoeDisplay, sans-serif;
+    font-family: "Montserrat SemiBold", sans-serif;
 }
 
 ul {

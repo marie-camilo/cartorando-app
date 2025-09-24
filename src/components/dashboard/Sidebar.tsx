@@ -3,11 +3,10 @@ import {useAuth} from "../../firebase/auth";
 import defaultAvatar from '../../assets/default_user.png';
 
 const links = [
-    {to: "/dashboard", label: "Aperçu"},
+    {to: "/dashboard", label: "Mon Profil"},
     {to: "/dashboard/hikes", label: "Mes Randos"},
     {to: "/dashboard/favorites", label: "Mes Favoris"},
     {to: "/dashboard/comments", label: "Mes Commentaires"},
-    {to: "/dashboard/profile", label: "Mon Profil"},
 ];
 
 export default function Sidebar() {
