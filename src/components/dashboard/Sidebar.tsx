@@ -6,7 +6,6 @@ const links = [
     {to: "/dashboard", label: "Mon Profil"},
     {to: "/dashboard/hikes", label: "Mes Randos"},
     {to: "/dashboard/favorites", label: "Mes Favoris"},
-    {to: "/dashboard/comments", label: "Mes Commentaires"},
 ];
 
 export default function Sidebar() {

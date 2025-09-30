@@ -9,25 +9,8 @@
   padding: 1rem 2rem;
   color: white;
 }
+
 .logo {
   font-size: 1.4rem;
   font-weight: bold;
 }
-
-.header-right {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  gap: 1rem;
-}
-
-.nav-links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.nav-links a:hover {
-  color: var(--orange);
-  text-decoration: none;
-}
-

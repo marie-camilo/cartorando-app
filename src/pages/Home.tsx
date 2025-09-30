@@ -28,9 +28,9 @@ export default function Home() {
         <div className="relative z-10 flex flex-col items-center justify-center w-full h-full text-center px-4">
           <h1 className="text-6xl font-bold text-white mb-6">The outdoors,<br />crowdsourced.</h1>
           <Link to="/hikes/list">
-            <button className="bg-white text-black font-semibold px-8 py-4 rounded-full shadow-lg hover:bg-gray-200 transition">
+            <Button variant="orange">
               Découvrir les randos
-            </button>
+            </Button>
           </Link>
         </div>
       </div>
@@ -77,11 +77,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 text-center">
-        <p>&copy; 2025 Hikee. Tous droits réservés.</p>
-      </footer>
     </div>
   )
 }

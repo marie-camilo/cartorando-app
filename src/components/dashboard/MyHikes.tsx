@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
+import toast from "react-hot-toast"
 import {HiPlus} from "react-icons/hi";
 import {db} from "../../lib/firebase"
 import {
@@ -53,22 +54,43 @@ export default function MyHikes() {
     }, [user])
 
     const handleDelete = async (id: string) => {
-        if (!window.confirm('Supprimer cette rando ?')) return
-        try {
-            await deleteDoc(doc(db, 'hikes', id))
-            alert('Randonnée supprimée !')
-        } catch (e) {
-            console.error(e)
-            alert('Erreur lors de la suppression')
-        }
+        toast((t) => (
+          <div className="flex flex-col gap-2">
+              <span>Supprimer cette randonnée ?</span>
+              <div className="flex justify-end gap-2 mt-1">
+                  <button
+                    className="bg-gray-200 px-3 py-1 rounded cursor-pointer"
+                    onClick={() => toast.dismiss(t.id)}
+                  >
+                      Annuler
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-3 py-1 rounded cursor-pointer"
+                    onClick={async () => {
+                        toast.dismiss(t.id)
+                        try {
+                            await deleteDoc(doc(db, 'hikes', id))
+                            toast.success('Randonnée supprimée !')
+                        } catch (e) {
+                            console.error(e)
+                            toast.error('Erreur lors de la suppression')
+                        }
+                    }}
+                  >
+                      Supprimer
+                  </button>
+              </div>
+          </div>
+        ), { position: 'top-center' }) // <-- position modifiée
     }
+
 
     if (!user) {
         return <p>Vous devez être connecté pour voir vos randonnées.</p>
     }
 
     return (
-      <div className="max-w-7xl mx-auto">
+      <div>
           <div className="flex items-center justify-between mb-6">
               <h1 className="text-2xl font-bold">Mes randonnées</h1>
               <Button

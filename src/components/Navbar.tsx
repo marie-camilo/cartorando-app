@@ -43,11 +43,12 @@ export default function Header() {
 
           {!user ? (
             <Link to="/login">
-              <Button className={buttonColor}>Se connecter</Button>
+              <Button variant="orange" className={buttonColor}>Se connecter</Button>
             </Link>
           ) : (
             <div className="relative">
               <Button
+                variant="orange"
                 onClick={() => setOpen(!open)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg transition ${buttonColor}`}
               >
