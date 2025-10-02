@@ -44,17 +44,15 @@ Le suivi des tâches et l’organisation du projet sont disponibles sur Trello :
 
 ## Stack technique
 ### Frontend
-- [Vue.js 3](https://vuejs.org/) + [Vite](https://vitejs.dev/)  
+- [React.js](https://react.dev/) + [Vite](https://vitejs.dev/)  
 - [TailwindCSS](https://tailwindcss.com/)  
 - [Leaflet.js](https://leafletjs.com/)  
 
 ### Backend
-- [Node.js](https://nodejs.org/) + [Express.js](https://expressjs.com/)  
-- [Prisma](https://www.prisma.io/) (ORM)  
+- [Firebase](https://console.firebase.google.com/)
 
 ### Base de données
-- [PostgreSQL](https://www.postgresql.org/)  
-- [PostGIS](https://postgis.net/)  
+- [Firebase](https://console.firebase.google.com/) + [Firestore](https://console.firebase.google.com/)
 
 ### Hébergement
 - Frontend : [Netlify](https://www.netlify.com/) ou [Vercel](https://vercel.com/)  
@@ -65,7 +63,7 @@ Le suivi des tâches et l’organisation du projet sont disponibles sur Trello :
 ## Architecture du projet
 
 ```text
-rando-bivouac/
+hikee/
 ├── backend/              # API (Express + Node.js)
 │   ├── src/
 │   │   ├── routes/       # Routes API (hikes, camps, users)
