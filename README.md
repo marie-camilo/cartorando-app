@@ -1,7 +1,7 @@
 # 🗺️ Rando & Bivouac – Cartographie Outdoor
 
 Projet full stack permettant de cartographier des **randonnées** et des **spots de bivouac**.  
-Inspiré de sites comme *Altitude Rando*, ce projet est codé avec **Vue.js, Node.js et PostgreSQL/PostGIS**.
+Inspiré de sites comme *Altitude Rando*, ce projet est codé avec **React.js, Tailwind.css et Firebase**.
 
 ---
 
