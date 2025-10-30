@@ -1,4 +1,5 @@
 import React, { useEffect, useState, FormEvent } from 'react'
+import { MapPin, Route, Mountain, Gauge, Calendar } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { db } from '../lib/firebase'
 import FavoriteButton from '../components/ButtonFav'
@@ -7,6 +8,7 @@ import HikeMap from '../components/HikeMap'
 import CommentsSection, { Comment } from '../components/CommentsSection'
 import { doc, onSnapshot, collection, addDoc, query, orderBy, DocumentData, DocumentSnapshot, QuerySnapshot, Timestamp } from 'firebase/firestore'
 import { useAuth } from '../firebase/auth'
+import WeatherBanner from '../components/hikes/WeatherBanner';
 
 interface Hike {
   id: string
@@ -112,25 +114,58 @@ export default function HikeView() {
 
       {/* Hike Info */}
       <div className="bg-white shadow rounded-xl p-6 space-y-4">
-        <h1 className="text-3xl font-bold">{hike.title}</h1>
-        <div className="flex flex-wrap gap-3 text-sm text-gray-600">
-          <span>{hike.region}</span>
-          <span>• {hike.distanceKm} km</span>
-          <span>• +{hike.elevationGainM} m</span>
-          <span
-            className={`px-3 py-1 text-xs font-semibold text-white rounded-full ${difficultyColors[hike.difficulty]}`}
-          >
-            {hike.difficulty === 'easy'
-              ? 'Facile'
-              : hike.difficulty === 'moderate'
-                ? 'Modérée'
-                : 'Difficile'}
-          </span>
+        <h1 className="text-3xl font-bold text-gray-900">{hike.title}</h1>
+
+        <div className="flex flex-wrap items-center gap-3 text-sm text-gray-700">
+          {/* Région */}
+          <div className="flex items-center gap-1.5">
+            <MapPin className="w-4 h-4 text-[var(--corail)]" />
+            <span>{hike.region}</span>
+          </div>
+
+          {/* Distance */}
+          <div className="flex items-center gap-1.5">
+            <Route className="w-4 h-4 text-[var(--orange)]" />
+            <span>{hike.distanceKm} km</span>
+          </div>
+
+          {/* Dénivelé */}
+          <div className="flex items-center gap-1.5">
+            <Mountain className="w-4 h-4 text-[var(--green-moss)]" />
+            <span>+{hike.elevationGainM} m</span>
+          </div>
+
+          {/* Difficulté */}
+          <div className="flex items-center gap-1.5">
+            <span
+              className={`px-3 py-1 text-xs font-semibold text-white rounded-full ${difficultyColors[hike.difficulty]}`}
+            >
+        {hike.difficulty === 'easy'
+          ? 'Facile'
+          : hike.difficulty === 'moderate'
+            ? 'Modérée'
+            : 'Difficile'}
+      </span>
+          </div>
         </div>
+
+        {/* Description */}
         <p className="text-gray-700 leading-relaxed">{hike.description}</p>
-        <div className="text-xs text-gray-500 space-y-1">
-          {hike.createdAt && <p>Créée le {formatDate(hike.createdAt)}</p>}
-          {hike.updatedAt && <p>Dernière mise à jour le {formatDate(hike.updatedAt)}</p>}
+
+        {/* Dates */}
+        <div className="text-xs text-gray-500 space-y-1 mt-3">
+          {hike.createdAt && (
+            <p className="flex items-center gap-1.5">
+              <Calendar className="w-3 h-3 text-gray-400" />
+              Créée le {formatDate(hike.createdAt)}
+            </p>
+          )}
+          {hike.updatedAt && (
+            <p className="flex items-center gap-1.5">
+              <Calendar className="w-3 h-3 text-gray-400" />
+              Dernière mise à jour le {formatDate(hike.updatedAt)}
+            </p>
+          )}
         </div>
       </div>
 
@@ -156,6 +191,9 @@ export default function HikeView() {
               </ul>
             </div>
           )}
+          <div>
+            <WeatherBanner city="Chamonix" />
+          </div>
         </div>
       </div>
 

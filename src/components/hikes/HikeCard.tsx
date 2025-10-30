@@ -22,7 +22,7 @@ export default function HikeCard({ id, title, image, difficulty, region }: HikeC
       to={`/hikes/${id}`}
       className="group relative block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300"
     >
-      <div className="relative">
+      <div className="relative w-full h-56">
         <img
           src={defaultImage}
           alt={`Image de la randonnée ${title}`}

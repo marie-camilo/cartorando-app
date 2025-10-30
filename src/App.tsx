@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom"
 import Header from "./components/Navbar"
+import Footer from './components/Footer';
 import { Toaster } from "react-hot-toast"
 
 export default function App() {
@@ -9,6 +10,7 @@ export default function App() {
       <main>
         <Outlet/>
       </main>
+      <Footer/>
 
       <Toaster
         position="top-right"
