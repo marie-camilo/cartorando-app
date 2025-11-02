@@ -173,7 +173,7 @@ export default function HikeView() {
       <div className="bg-white shadow rounded-xl p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           {/* Carte */}
-          <div className="w-full h-80 md:h-[500px] overflow-hidden rounded-lg">
+          <div className="w-full h-80 md:h-[500px] overflow-hidden rounded-lg md:z-30">
             <HikeMap hikeId={id!} polyline={hike.polyline} editable={!!user} />
           </div>
 

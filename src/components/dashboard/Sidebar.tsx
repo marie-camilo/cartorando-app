@@ -9,18 +9,24 @@ const links = [
   { to: "/dashboard/preferences", label: "Préférences" },
 ];
 
-export default function Sidebar() {
+interface Props {
+  className?: string;
+}
+
+export default function Sidebar({ className = "" }: Props) {
   const { user } = useAuth();
 
   return (
-    <aside className="w-72 bg-white shadow-md p-6 rounded-xl flex flex-col">
-      <div className="flex-col items-center gap-3 mb-6">
+    <aside className={`flex flex-col h-full ${className}`}>
+      <div className="flex flex-col items-center gap-3 mb-6">
         <img
           src={defaultAvatar}
           alt="avatar"
-          className="w-30 h-30 rounded-full object-cover"
+          className="w-24 h-24 rounded-full object-cover"
         />
-        <span className="font-medium text-xl">{user?.displayName || user?.email?.split("@")[0]}</span>
+        <span className="font-medium text-xl text-center">
+          {user?.displayName || user?.email?.split("@")[0]}
+        </span>
       </div>
 
       <nav className="flex flex-col gap-3 mt-6">
@@ -31,9 +37,7 @@ export default function Sidebar() {
             end
             className={({ isActive }) =>
               `block px-4 py-2 rounded-lg transition ${
-                isActive
-                  ? "bg-[var(--orange)] text-white"
-                  : "hover:bg-gray-100"
+                isActive ? "bg-[var(--orange)] text-white" : "hover:bg-gray-100"
               }`
             }
           >

@@ -66,7 +66,7 @@ export default function Overview() {
       </p>
 
       {/* Statistiques rapides */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="bg-white shadow rounded-xl p-6 text-center">
           <p className="text-sm text-gray-500">Mes randonnées</p>
           <p className="text-2xl font-bold">{myHikes.length}</p>
@@ -95,7 +95,7 @@ export default function Overview() {
       </div>
 
       {/* Actions rapides */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <Button variant="green" onClick={() => navigate("/hikes/new")}>
           Ajouter une rando
         </Button>
