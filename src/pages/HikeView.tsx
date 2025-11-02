@@ -3,10 +3,9 @@ import { MapPin, Route, Mountain, Gauge, Calendar } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { db } from '../lib/firebase'
 import FavoriteButton from '../components/ButtonFav'
-import Button from '../components/Button'
 import HikeMap from '../components/HikeMap'
 import CommentsSection, { Comment } from '../components/CommentsSection'
-import { doc, onSnapshot, collection, addDoc, query, orderBy, DocumentData, DocumentSnapshot, QuerySnapshot, Timestamp } from 'firebase/firestore'
+import { doc, onSnapshot, collection, addDoc, query, orderBy, DocumentData, DocumentSnapshot, QuerySnapshot, Timestamp, serverTimestamp } from 'firebase/firestore'
 import { useAuth } from '../firebase/auth'
 import WeatherBanner from '../components/hikes/WeatherBanner';
 
@@ -105,11 +104,9 @@ export default function HikeView() {
       {/* Header Image + Favorite */}
       <div className="relative overflow-hidden rounded-xl shadow">
         <img src={defaultImage} alt="Vue de montagne" className="w-full h-80 object-cover" />
-        {user && id && (
-          <div className="absolute top-3 right-3">
-            <FavoriteButton user={user} hikeId={id} />
-          </div>
-        )}
+        <div className="absolute top-3 right-3">
+          {id && <FavoriteButton user={user} hikeId={id} />}
+        </div>
       </div>
 
       {/* Hike Info */}

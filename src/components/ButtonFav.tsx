@@ -3,12 +3,12 @@ import { FaStar } from 'react-icons/fa';
 import { db } from '../lib/firebase';
 import {
   doc,
-  getDoc,
+  onSnapshot,
   setDoc,
   deleteDoc,
-  serverTimestamp,
-  onSnapshot
+  serverTimestamp
 } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 interface FavoriteButtonSmartProps {
   user: { uid: string } | null;
@@ -17,11 +17,12 @@ interface FavoriteButtonSmartProps {
 }
 
 export default function FavoriteButton ({
-                                              user,
-                                              hikeId,
-                                              className = '',
-                                            }: FavoriteButtonSmartProps) {
+                                          user,
+                                          hikeId,
+                                          className = '',
+                                        }: FavoriteButtonSmartProps) {
   const [isFavorite, setIsFavorite] = useState(false);
+  const navigate = useNavigate();
 
   // Vérifie si la rando est dans les favoris et écoute les changements
   useEffect(() => {
@@ -33,9 +34,12 @@ export default function FavoriteButton ({
     return () => unsub();
   }, [user, hikeId]);
 
-  // Ajoute ou retire la rando des favoris
-  const toggleFavorite = async () => {
-    if (!user || !hikeId) return;
+  // Ajoute ou retire la rando des favoris, ou redirige si pas connecté
+  const handleClick = async () => {
+    if (!user) {
+      navigate('/login'); // Redirige vers la page de login
+      return;
+    }
     const favRef = doc(db, 'favorites', `${user.uid}_${hikeId}`);
     if (isFavorite) {
       await deleteDoc(favRef);
@@ -50,8 +54,7 @@ export default function FavoriteButton ({
 
   return (
     <button
-      onClick={toggleFavorite}
-      disabled={!user}
+      onClick={handleClick}
       aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
       className={`p-2 rounded-full bg-gray-100 cursor-pointer
                   transition-colors duration-200
