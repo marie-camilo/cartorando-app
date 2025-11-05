@@ -61,7 +61,7 @@ export default function CommentsSection({
     }
   }, [editingCommentId, editingReplyId]);
 
-  // 🔹 Charger les commentaires et leurs réponses en temps réel
+  // Charger les commentaires et leurs réponses
   useEffect(() => {
     const commentsRef = collection(db, 'hikes', hikeId, 'comments');
     const q = query(commentsRef, orderBy('createdAt', 'asc'));
@@ -97,7 +97,7 @@ export default function CommentsSection({
     return () => unsubscribe();
   }, [hikeId]);
 
-  // 🔹 Ajouter un commentaire
+  // Ajouter un commentaire
   const handleAddComment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const text = newComment.trim();
@@ -116,7 +116,7 @@ export default function CommentsSection({
     }
   };
 
-  // 🔹 Ajouter une réponse
+  // Ajouter une réponse
   const handleAddReply = async (commentId: string) => {
     const text = replyTexts[commentId]?.trim();
     if (!text) return;
@@ -134,7 +134,6 @@ export default function CommentsSection({
         replyData
       );
 
-      // Mise à jour locale immédiate
       setComments((prev) =>
         prev.map((c) =>
           c.id === commentId
@@ -192,7 +191,7 @@ export default function CommentsSection({
     }
   };
 
-  // 🔹 Edition et suppression replies
+  // Edition et suppression replies
   const startEditingReply = (reply: Comment) => {
     setEditingReplyId(reply.id);
     setEditingReplyTexts((prev) => ({ ...prev, [reply.id]: reply.text }));
@@ -212,13 +211,11 @@ export default function CommentsSection({
     if (!trimmed) return;
 
     try {
-      // 1️⃣ Mise à jour Firestore
       await updateDoc(
         doc(db, 'hikes', hikeId, 'comments', commentId, 'replies', replyId),
         { text: trimmed, updatedAt: serverTimestamp() }
       );
 
-      // 2️⃣ Mise à jour locale immédiate
       setComments(prev =>
         prev.map(c =>
           c.id === commentId
@@ -271,7 +268,6 @@ export default function CommentsSection({
         <ul className="space-y-3">
           {comments.map((c) => (
             <li key={c.id} className="border border-gray-200 rounded-lg p-3 bg-gray-50 flex flex-col">
-              {/* Commentaire principal */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
                 <div className="flex-1">
                   {editingCommentId === c.id ? (
@@ -318,7 +314,6 @@ export default function CommentsSection({
                         >
                           Modifier
                         </Button>
-                        {/* Bouton réponse */}
                         {canComment && (
                           <Button
                             onClick={() => setReplyingTo(replyingTo === c.id ? null : c.id)}
