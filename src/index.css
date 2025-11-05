@@ -4,10 +4,19 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'NoeDisplay';
-    src: url('./assets/fonts/noedisplay-font.ttf') format('truetype');
-    font-weight: 400;
+    font-family: 'Satoshi-Variable';
+    src: url('./assets/fonts/Satoshi-Variable.ttf') format('truetype');
+    font-weight: 300 900;
+    font-display: swap;
     font-style: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./assets/fonts/Satoshi-VariableItalic.ttf') format('truetype');
+    font-weight: 300 900;
+    font-display: swap;
+    font-style: italic;
 }
 
 :root {
@@ -23,32 +32,32 @@
     --red: #e15145;
 }
 
-body {
+::selection {
+    background-color: var(--green-moss);
+    color: white;
+}
+
+::-moz-selection {
+    background-color: var(--green-moss);
+    color: white;
+}
+
+html, body {
     font-family: 'Montserrat', sans-serif;
     background-color: var(--white);
-    color: #2E2E2E;
+    color: var(--dark);
     margin: 0;
     padding: 0;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 1.75rem;
-}
-
-header nav a:hover {
-    color: var(--corail);
-    text-decoration: underline;
-}
-.input {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #D9D9D9;
-    border-radius: 0.5rem;
-    width: 100%;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
+/* === Typography Hierarchy === */
 h1, h2, h3 {
-    font-family: "Montserrat SemiBold", sans-serif;
+    font-family: 'Satoshi-Variable', sans-serif;
+    text-transform: uppercase;
 }
+
+
+
+

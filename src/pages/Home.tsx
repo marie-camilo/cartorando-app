@@ -35,36 +35,37 @@ export default function Home() {
 
   return (
     <div className="w-full overflow-hidden">
-      {/* Hero vidéo */}
-      <div className="relative w-full h-screen overflow-hidden">
+      <div className="relative w-full h-[100dvh] overflow-hidden">
         <video
-          className="absolute top-0 left-0 w-full h-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-        >
+          className="absolute top-0 left-0 w-full h-full object-cover" autoPlay muted loop playsInline>
           <source src="/images/home-bg-video.mp4" type="video/mp4" />
         </video>
 
-        <div className="absolute inset-0 bg-black opacity-30"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-transparent to-black/60"></div>
 
-        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full text-center px-4">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">The outdoors,<br />crowdsourced.</h1>
-
-          {/* Barre de recherche dans le hero */}
-          <input
-            type="text"
-            placeholder="Rechercher par nom ou région"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-2/3 sm:w-1/2 max-w-lg p-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--orange)] mb-4 bg-white opacity-90"
-          />
-          <Link to="/hikes/list">
-            <Button variant="orange">
-              Découvrir les randos
+        <div className="absolute bottom-0 left-0 z-20 px-4 pb-12 sm:px-8 sm:pb-16 md:px-16 md:pb-24 max-w-5xl">
+          <div className="space-y-6 sm:space-y-8">
+            <Button variant="lavender" arrow>
+              Next-gen outdoor platform
             </Button>
-          </Link>
+
+            <h1
+              className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-bold leading-tight tracking-tight uppercase"
+              style={{ color: "var(--white, #fafafa)" }}
+            >
+              The outdoors,<br />
+              <span style={{ color: "var(--corail, #EF955F)" }}>crowdsourced.</span>
+            </h1>
+
+            <p
+              className="text-sm sm:text-base md:text-lg max-w-md sm:max-w-xl md:max-w-2xl leading-relaxed"
+              style={{ color: "var(--white, #ada3b1)" }}
+            >
+              Discover, share, live. A collaborative adventure where every explorer becomes a
+              contributor, and every piece of nature is a treasure to share. Join a community
+              that’s always innovating, in search of the best outdoor destinations.
+            </p>
+          </div>
         </div>
       </div>
 
