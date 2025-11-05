@@ -16,15 +16,11 @@ interface FavoriteButtonSmartProps {
   className?: string;
 }
 
-export default function FavoriteButton ({
-                                          user,
-                                          hikeId,
-                                          className = '',
-                                        }: FavoriteButtonSmartProps) {
+export default function FavoriteButton ({ user, hikeId, className = '', }: FavoriteButtonSmartProps) {
   const [isFavorite, setIsFavorite] = useState(false);
   const navigate = useNavigate();
 
-  // Vérifie si la rando est dans les favoris et écoute les changements
+  // Vérifier si la rando est dans les favoris
   useEffect(() => {
     if (!user || !hikeId) return;
     const favRef = doc(db, 'favorites', `${user.uid}_${hikeId}`);
@@ -34,10 +30,10 @@ export default function FavoriteButton ({
     return () => unsub();
   }, [user, hikeId]);
 
-  // Ajoute ou retire la rando des favoris, ou redirige si pas connecté
+  // Ajouter ou retirer la rando des favoris, rediriger si pas connecté
   const handleClick = async () => {
     if (!user) {
-      navigate('/login'); // Redirige vers la page de login
+      navigate('/login');
       return;
     }
     const favRef = doc(db, 'favorites', `${user.uid}_${hikeId}`);

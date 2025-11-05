@@ -17,6 +17,8 @@ import Overview from "./components/dashboard/Overview";
 import MyHikes from "./components/dashboard/MyHikes";
 import Favorites from "./components/dashboard/Favorites";
 import EditProfile from './components/dashboard/EditProfile';
+import AdminRoute from './routes/AdminRoute';
+import Admin from './pages/AdminPage';
 
 type PrivateRouteProps = { children: React.ReactNode }
 
@@ -48,7 +50,9 @@ const router = createBrowserRouter([
                     {path: 'favorites', element: <Favorites/>},
                     { path: 'preferences', element: <EditProfile /> },
                 ]
-            }
+            },
+
+            { path: 'admin', element: <AdminRoute><Admin/></AdminRoute> },
         ]
     }
 ])

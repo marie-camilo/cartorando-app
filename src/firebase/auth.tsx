@@ -6,6 +6,8 @@ import {
 } from 'react'
 import type { ReactNode } from 'react'
 import { auth, googleProvider } from '../lib/firebase'
+import { db } from '../lib/firebase'
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import {
     onAuthStateChanged,
     signInWithEmailAndPassword,
@@ -57,12 +59,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
         signInWithEmailAndPassword(auth, email, password)
 
     const signUpEmail = async (
-        email: string,
-        password: string,
-        displayName?: string
+      email: string,
+      password: string,
+      displayName?: string
     ) => {
         const cred = await createUserWithEmailAndPassword(auth, email, password)
+
         if (displayName) await updateProfile(cred.user, { displayName })
+
+        // 🔥 Ajouter un document utilisateur dans Firestore
+        await setDoc(doc(db, 'users', cred.user.uid), {
+            email,
+            displayName: displayName || '',
+            createdAt: serverTimestamp(),
+            role: 'user', // Par défaut
+        })
+
         return cred.user
     }
 

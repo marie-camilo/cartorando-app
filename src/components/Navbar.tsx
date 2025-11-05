@@ -4,9 +4,11 @@ import Button from "./Button";
 import { useAuth } from "../firebase/auth";
 import defaultAvatar from '../assets/default_user.png';
 import { HiMenu, HiX } from "react-icons/hi";
+import { useRole } from "../hooks/useRole";
 
 export default function Header() {
   const { user, signOutUser } = useAuth();
+  const { isAdmin } = useRole();
   const location = useLocation();
   const [open, setOpen] = useState(false); // dropdown avatar
   const [mobileOpen, setMobileOpen] = useState(false); // menu mobile
@@ -65,6 +67,17 @@ export default function Header() {
                   >
                     Mon profil
                   </Link>
+
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="block px-4 py-3 hover:bg-gray-100 text-orange-600 font-semibold"
+                      onClick={() => setOpen(false)}
+                    >
+                      Admin
+                    </Link>
+                  )}
+
                   <button
                     onClick={() => { signOutUser(); setOpen(false); }}
                     className="w-full text-left px-4 py-3 hover:bg-gray-100"
@@ -101,8 +114,28 @@ export default function Header() {
             </Link>
           ) : (
             <>
-              <Link onClick={() => setMobileOpen(false)} className={`py-2 ${linkColor}`} to="/dashboard">Mon profil</Link>
-              <button onClick={() => { signOutUser(); setMobileOpen(false); }} className={`py-2 w-full text-left ${linkColor}`}>
+              <Link
+                onClick={() => setMobileOpen(false)}
+                className={`py-2 ${linkColor}`}
+                to="/dashboard"
+              >
+                Mon profil
+              </Link>
+
+              {isAdmin && (
+                <Link
+                  onClick={() => setMobileOpen(false)}
+                  className={`py-2 ${linkColor} font-semibold text-orange-600`}
+                  to="/admin"
+                >
+                  Admin
+                </Link>
+              )}
+
+              <button
+                onClick={() => { signOutUser(); setMobileOpen(false); }}
+                className={`py-2 w-full text-left ${linkColor}`}
+              >
                 Se déconnecter
               </button>
             </>

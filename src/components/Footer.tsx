@@ -161,7 +161,7 @@ const Footer: React.FC = () => {
             <div className="flex items-center gap-2 text-sm text-[var(--lavander)]">
               <span>Fait avec</span>
               <span className="text-[var(--corail)]">♥</span>
-              <span>pour les amoureux de la nature - Marie CAMILO-MARCHAL</span>
+              <span>pour les amoureux de la nature - Marie CAMILO-MARCHAL & Charlotte DUVERGER</span>
             </div>
           </div>
         </div>
