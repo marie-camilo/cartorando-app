@@ -9,7 +9,7 @@ interface HikeCardProps {
 }
 
 export default function HikeCard({ id, title, image, difficulty, region }: HikeCardProps) {
-  const defaultImage = image || '/images/home-bg.jpg'
+  const displayedImage = image || '/images/home-bg.jpg'
 
   const difficultyColors: Record<HikeCardProps['difficulty'], string> = {
     easy: 'bg-[var(--green)]',
@@ -24,7 +24,7 @@ export default function HikeCard({ id, title, image, difficulty, region }: HikeC
     >
       <div className="relative w-full h-56">
         <img
-          src={defaultImage}
+          src={displayedImage}
           alt={`Image de la randonnée ${title}`}
           className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105"
         />
@@ -34,13 +34,6 @@ export default function HikeCard({ id, title, image, difficulty, region }: HikeC
         >
           {difficulty === 'easy' ? 'Facile' : difficulty === 'moderate' ? 'Modérée' : 'Difficile'}
         </span>
-
-        <svg
-          className="absolute top-0 right-0 w-16 h-16 text-[var(--corail)] opacity-80"
-          viewBox="0 0 100 100"
-          fill="currentColor"
-        >
-        </svg>
       </div>
 
       <div className="p-5">

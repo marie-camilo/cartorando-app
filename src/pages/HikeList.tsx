@@ -3,8 +3,21 @@ import { collection, onSnapshot, DocumentData, QuerySnapshot } from 'firebase/fi
 import { db } from '../lib/firebase'
 import HikeCard from '../components/hikes/HikeCard'
 
+interface Hike {
+  id: string
+  title: string
+  difficulty: 'easy' | 'moderate' | 'hard'
+  region: string
+  imageUrls: string[]
+}
 export default function HikeList() {
-  const [hikes, setHikes] = useState<{ id: string; title: string; difficulty: 'easy' | 'moderate' | 'hard'; region: string }[]>([])
+  const [hikes, setHikes] = useState<{
+    id: string
+    title: string
+    difficulty: 'easy' | 'moderate' | 'hard'
+    region: string
+    images?: string[]
+  }[]>([])
   const [difficultyFilter, setDifficultyFilter] = useState<string>('all')
   const [regionFilter, setRegionFilter] = useState<string>('all')
 
@@ -12,17 +25,22 @@ export default function HikeList() {
     const unsub = onSnapshot(
       collection(db, 'hikes'),
       (snap: QuerySnapshot<DocumentData>) => {
-        const data = snap.docs.map(d => ({
-          id: d.id,
-          title: d.data().title,
-          difficulty: d.data().difficulty,
-          region: d.data().region
-        }))
+        const data = snap.docs.map(d => {
+          const docData = d.data()
+          return {
+            id: d.id,
+            title: docData.title,
+            difficulty: docData.difficulty,
+            region: docData.region,
+            images: docData.imageUrls || [],
+          }
+        })
         setHikes(data)
       }
     )
     return () => unsub()
   }, [])
+
 
   // Applique les filtres
   const filteredHikes = hikes.filter(h =>
@@ -73,6 +91,7 @@ export default function HikeList() {
               key={h.id}
               id={h.id}
               title={h.title}
+              image={h.images?.[0]}
               difficulty={h.difficulty}
               region={h.region}
             />

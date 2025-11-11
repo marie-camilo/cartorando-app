@@ -27,7 +27,7 @@ export default function MyHikes() {
           title: string
           region: string
           difficulty?: 'easy' | 'moderate' | 'hard'
-          image?: string
+          imageUrls: string[]
           createdAt?: Date
       }[]
     >([])
@@ -44,7 +44,7 @@ export default function MyHikes() {
                 id: d.id,
                 title: d.data().title,
                 region: d.data().region,
-                image: d.data().image || undefined,
+                images: d.data().imageUrls || [],
                 difficulty: d.data().difficulty || 'easy',
                 createdAt: d.data().createdAt?.toDate(),
             }))
@@ -81,7 +81,7 @@ export default function MyHikes() {
                   </button>
               </div>
           </div>
-        ), { position: 'top-center' }) // <-- position modifiée
+        ), { position: 'top-center' })
     }
 
 
@@ -112,7 +112,7 @@ export default function MyHikes() {
                       <HikeCard
                         id={h.id}
                         title={h.title}
-                        image={h.image}
+                        image={h.images?.[0]}
                         difficulty={h.difficulty || 'easy'}
                         region={h.region}
                       />

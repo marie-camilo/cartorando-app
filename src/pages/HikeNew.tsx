@@ -54,14 +54,22 @@ export default function HikeNew() {
     const { fields, append, remove } = useFieldArray({ control, name: 'itinerary' });
 
     // ----------------- Gestion Images -----------------
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!e.target.files) return
-        const files = Array.from(e.target.files)
-        const newFiles = [...imageFiles, ...files]
-        setImageFiles(newFiles)
-        setImagePreviews(newFiles.map(f => URL.createObjectURL(f)))
-        setValue('images', newFiles)
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return
+    const files = Array.from(e.target.files)
+
+    // Limite à 5 images
+    const totalFiles = imageFiles.length + files.length
+    if (totalFiles > 5) {
+      toast.error("Vous ne pouvez ajouter que 5 images maximum")
+      return
     }
+
+    const newFiles = [...imageFiles, ...files]
+    setImageFiles(newFiles)
+    setImagePreviews(newFiles.map(f => URL.createObjectURL(f)))
+    setValue('images', newFiles)
+  }
 
     const removeImage = (index: number) => {
         const newFiles = imageFiles.filter((_, i) => i !== index)
@@ -101,57 +109,71 @@ export default function HikeNew() {
     }
 
     // ----------------- Submit -----------------
-    const onSubmit: SubmitHandler<HikeFormData> = async (data) => {
-        if (!user) return toast.error('Vous devez être connecté !')
-        setLoading(true)
+  const onSubmit: SubmitHandler<HikeFormData> = async (data) => {
+    if (!user) return toast.error('Vous devez être connecté !')
+    setLoading(true)
 
-        try {
-            const hikeRef = await addDoc(collection(db, 'hikes'), {
-                title: data.title,
-                description: data.description,
-                region: data.region,
-                difficulty: data.difficulty,
-                distanceKm: data.distanceKm,
-                elevationGainM: data.elevationGainM,
-                gpxPath: null,
-                imageUrls: [],
-                itinerary: data.itinerary,
-                createdBy: user.uid,
-                createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp(),
-                favoritesCount: 0
-            })
+    try {
+      const hikeRef = await addDoc(collection(db, 'hikes'), {
+        title: data.title,
+        description: data.description,
+        region: data.region,
+        difficulty: data.difficulty,
+        distanceKm: data.distanceKm,
+        elevationGainM: data.elevationGainM,
+        gpxPath: null,
+        imageUrls: [],
+        itinerary: data.itinerary,
+        createdBy: user.uid,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        favoritesCount: 0
+      })
 
-            // Upload GPX
-            if (gpxFile) {
-                const gpxPath = `uploads/gpx/${user.uid}/${hikeRef.id}.gpx`
-                const gpxRef = ref(storage, gpxPath)
-                await uploadBytes(gpxRef, gpxFile)
-                await updateDoc(doc(db, 'hikes', hikeRef.id), { gpxPath, updatedAt: serverTimestamp() })
-            }
+      // ------------------ GPX ------------------
+      let finalGpxPath = null
 
-            // Upload Images
-            const imageUrls: string[] = []
-            for (let i = 0; i < imageFiles.length; i++) {
-                const file = imageFiles[i]
-                const path = `uploads/images/${user.uid}/${hikeRef.id}/${file.name}`
-                const imageRef = ref(storage, path)
-                await uploadBytes(imageRef, file)
-                const url = await getDownloadURL(imageRef)
-                imageUrls.push(url)
-            }
-            if (imageUrls.length) await updateDoc(doc(db, 'hikes', hikeRef.id), { imageUrls, updatedAt: serverTimestamp() })
+      if (gpxFile) {
+        // Si l'utilisateur a ajouté un GPX
+        finalGpxPath = `uploads/gpx/${user.uid}/${hikeRef.id}.gpx`
+        const gpxRef = ref(storage, finalGpxPath)
+        await uploadBytes(gpxRef, gpxFile)
+      } else {
+        // Sinon, on peut uploader un GPX par défaut (si tu en as un dans /public ou ailleurs)
+        const defaultGpxUrl = '/default.gpx' // <- place ton fichier GPX par défaut dans public/
+        const response = await fetch(defaultGpxUrl)
+        const blob = await response.blob()
+        finalGpxPath = `uploads/gpx/${user.uid}/${hikeRef.id}-default.gpx`
+        const gpxRef = ref(storage, finalGpxPath)
+        await uploadBytes(gpxRef, blob)
+      }
 
-            toast.success("Votre randonnée a bien été ajoutée !")
-            navigate("/dashboard/hikes")
-        } catch (err) {
-            console.error(err)
-            toast.error("Une erreur est survenue pendant l'ajout de la randonnée'")
-        } finally {
-            setLoading(false)
-        }
+      // Mettre à jour Firestore avec le chemin GPX final
+      await updateDoc(doc(db, 'hikes', hikeRef.id), { gpxPath: finalGpxPath, updatedAt: serverTimestamp() })
+
+      // ------------------ Images ------------------
+      const imageUrls: string[] = []
+      for (let i = 0; i < imageFiles.length; i++) {
+        const file = imageFiles[i]
+        const path = `uploads/images/${user.uid}/${hikeRef.id}/${file.name}`
+        const imageRef = ref(storage, path)
+        await uploadBytes(imageRef, file)
+        const url = await getDownloadURL(imageRef)
+        imageUrls.push(url)
+      }
+      if (imageUrls.length) await updateDoc(doc(db, 'hikes', hikeRef.id), { imageUrls, updatedAt: serverTimestamp() })
+
+      toast.success("Votre randonnée a bien été ajoutée !")
+      navigate("/dashboard/hikes")
+    } catch (err) {
+      console.error(err)
+      toast.error("Une erreur est survenue pendant l'ajout de la randonnée'")
+    } finally {
+      setLoading(false)
     }
-    const autoResize = (e: React.FormEvent<HTMLTextAreaElement>) => {
+  }
+
+  const autoResize = (e: React.FormEvent<HTMLTextAreaElement>) => {
         const el = e.currentTarget;
         el.style.height = "auto"; // reset
         el.style.height = el.scrollHeight + "px";
@@ -306,9 +328,16 @@ export default function HikeNew() {
           <div className="flex flex-col space-y-2">
               <label className="font-semibold text-gray-700">Images</label>
               <div className="flex gap-2">
-                  <button type="button" onClick={() => imageInputRef.current?.click()} className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition cursor-pointer">
-                      Ajouter des images
-                  </button>
+                <button
+                  type="button"
+                  onClick={() => imageInputRef.current?.click()}
+                  className={`bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition cursor-pointer ${
+                    imageFiles.length >= 5 ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                  disabled={imageFiles.length >= 5}
+                >
+                  Ajouter des images
+                </button>
                   <input type="file" accept="image/*" multiple className="hidden" ref={imageInputRef} onChange={handleImageChange}/>
               </div>
               <div className="flex gap-2 overflow-x-auto py-2">

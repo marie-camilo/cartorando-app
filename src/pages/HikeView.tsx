@@ -1,13 +1,14 @@
 import React, { useEffect, useState, FormEvent } from 'react'
-import { MapPin, Route, Mountain, Gauge, Calendar } from 'lucide-react'
+import { MapPin, Route, Mountain, Calendar } from 'lucide-react'
 import { useParams } from 'react-router-dom'
-import { db } from '../lib/firebase'
+import { db, storage } from '../lib/firebase'
+import { ref, getDownloadURL } from 'firebase/storage'
 import FavoriteButton from '../components/ButtonFav'
 import HikeMap from '../components/HikeMap'
 import CommentsSection, { Comment } from '../components/CommentsSection'
 import { doc, onSnapshot, collection, addDoc, query, orderBy, DocumentData, DocumentSnapshot, QuerySnapshot, Timestamp, serverTimestamp } from 'firebase/firestore'
 import { useAuth } from '../firebase/auth'
-import WeatherBanner from '../components/hikes/WeatherBanner';
+import WeatherBanner from '../components/hikes/WeatherBanner'
 
 interface Hike {
   id: string
@@ -21,6 +22,8 @@ interface Hike {
   updatedAt?: Timestamp
   polyline?: [number, number][]
   itinerary?: { title: string; description: string }[]
+  imageUrls?: string[]
+  gpxPath?: string
 }
 
 export default function HikeView() {
@@ -29,6 +32,7 @@ export default function HikeView() {
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [gpxPolyline, setGpxPolyline] = useState<[number, number][]>([])
   const { user } = useAuth()
 
   // --- Charger la randonnée et les commentaires ---
@@ -63,6 +67,30 @@ export default function HikeView() {
     }
   }, [id])
 
+  // --- Charger GPX si disponible ---
+  useEffect(() => {
+    const loadGpx = async () => {
+      if (!hike) return
+      try {
+        if (hike.gpxPath) {
+          const url = await getDownloadURL(ref(storage, hike.gpxPath))
+          const res = await fetch(url)
+          const text = await res.text()
+          const parser = new DOMParser()
+          const xml = parser.parseFromString(text, 'application/xml')
+          const coords: [number, number][] = Array.from(xml.getElementsByTagName('trkpt')).map(pt => [
+            parseFloat(pt.getAttribute('lat') || '0'),
+            parseFloat(pt.getAttribute('lon') || '0')
+          ])
+          if (coords.length) setGpxPolyline(coords)
+        }
+      } catch (err) {
+        console.error('Impossible de charger le GPX', err)
+      }
+    }
+    loadGpx()
+  }, [hike])
+
   // --- Ajouter un commentaire ---
   const addComment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -94,6 +122,10 @@ export default function HikeView() {
 
   const defaultImage =
     'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=60'
+  const mainImage = hike.imageUrls && hike.imageUrls.length > 0
+    ? hike.imageUrls[0]
+    : defaultImage
+
   const formatDate = (ts: Timestamp) =>
     ts.toDate().toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' })
 
@@ -103,10 +135,42 @@ export default function HikeView() {
     <div className="container mx-auto max-w-10xl p-6 mt-25 space-y-6">
       {/* Header Image + Favorite */}
       <div className="relative overflow-hidden rounded-xl shadow">
-        <img src={defaultImage} alt="Vue de montagne" className="w-full h-80 object-cover" />
         <div className="absolute top-3 right-3">
           {id && <FavoriteButton user={user} hikeId={id} />}
         </div>
+        {hike.imageUrls && hike.imageUrls.length > 0 && (
+          <>
+            {/* Image principale */}
+            <div className="relative overflow-hidden rounded-xl shadow">
+              <img
+                src={hike.imageUrls[0]}
+                alt="Vue principale"
+                className="w-full h-80 md:h-[450px] object-cover"
+              />
+              <div className="absolute top-3 right-3">
+                {id && <FavoriteButton user={user} hikeId={id} />}
+              </div>
+            </div>
+
+            {/* Galerie sous l’image principale */}
+            {hike.imageUrls.length > 1 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-4">
+                {hike.imageUrls.slice(1).map((url, i) => (
+                  <div
+                    key={i}
+                    className="relative overflow-hidden rounded-lg group"
+                  >
+                    <img
+                      src={url}
+                      alt={`photo-${i + 1}`}
+                      className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       {/* Hike Info */}
@@ -114,42 +178,33 @@ export default function HikeView() {
         <h1 className="text-3xl font-bold text-gray-900">{hike.title}</h1>
 
         <div className="flex flex-wrap items-center gap-3 text-sm text-gray-700">
-          {/* Région */}
           <div className="flex items-center gap-1.5">
             <MapPin className="w-4 h-4 text-[var(--corail)]" />
             <span>{hike.region}</span>
           </div>
-
-          {/* Distance */}
           <div className="flex items-center gap-1.5">
             <Route className="w-4 h-4 text-[var(--orange)]" />
             <span>{hike.distanceKm} km</span>
           </div>
-
-          {/* Dénivelé */}
           <div className="flex items-center gap-1.5">
             <Mountain className="w-4 h-4 text-[var(--green-moss)]" />
             <span>+{hike.elevationGainM} m</span>
           </div>
-
-          {/* Difficulté */}
           <div className="flex items-center gap-1.5">
             <span
               className={`px-3 py-1 text-xs font-semibold text-white rounded-full ${difficultyColors[hike.difficulty]}`}
             >
-        {hike.difficulty === 'easy'
-          ? 'Facile'
-          : hike.difficulty === 'moderate'
-            ? 'Modérée'
-            : 'Difficile'}
-      </span>
+              {hike.difficulty === 'easy'
+                ? 'Facile'
+                : hike.difficulty === 'moderate'
+                  ? 'Modérée'
+                  : 'Difficile'}
+            </span>
           </div>
         </div>
 
-        {/* Description */}
         <p className="text-gray-700 leading-relaxed">{hike.description}</p>
 
-        {/* Dates */}
         <div className="text-xs text-gray-500 space-y-1 mt-3">
           {hike.createdAt && (
             <p className="flex items-center gap-1.5">
@@ -171,7 +226,11 @@ export default function HikeView() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           {/* Carte */}
           <div className="w-full h-80 md:h-[500px] overflow-hidden rounded-lg md:z-30">
-            <HikeMap hikeId={id!} polyline={hike.polyline} editable={!!user} />
+            <HikeMap
+              hikeId={id!}
+              editable={!!user}
+              gpxPath={hike.gpxPath || null} // <- toujours prioritaire
+            />
           </div>
 
           {/* Itinéraire */}

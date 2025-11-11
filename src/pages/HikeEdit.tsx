@@ -87,9 +87,17 @@ export default function HikeEdit() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     const files = Array.from(e.target.files)
+
+    // Limite à 5 images
+    const totalFiles = imageFiles.length + files.length
+    if (totalFiles > 5) {
+      toast.error("Vous ne pouvez ajouter que 5 images maximum")
+      return
+    }
+
     const newFiles = [...imageFiles, ...files]
     setImageFiles(newFiles)
-    setImagePreviews([...imagePreviews, ...newFiles.map(f => URL.createObjectURL(f))])
+    setImagePreviews(newFiles.map(f => URL.createObjectURL(f)))
     setValue('images', newFiles)
   }
 
@@ -150,15 +158,36 @@ export default function HikeEdit() {
         updatedAt: serverTimestamp(),
       })
 
-      // Upload GPX si nouveau fichier choisi
+      // ------------------ GPX ------------------
+      let finalGpxPath: string | null = null
+
       if (gpxFile) {
-        const gpxPath = `uploads/gpx/${user.uid}/${id}.gpx`
-        const gpxRef = ref(storage, gpxPath)
+        // Nouveau GPX choisi
+        finalGpxPath = `uploads/gpx/${user.uid}/${id}.gpx`
+        const gpxRef = ref(storage, finalGpxPath)
         await uploadBytes(gpxRef, gpxFile)
-        await updateDoc(hikeRef, { gpxPath, updatedAt: serverTimestamp() })
+      } else {
+        // Vérifier si GPX existant dans Firestore
+        const hikeSnap = await hikeRef.get()
+        const existingGpx = hikeSnap.data()?.gpxPath
+        if (!existingGpx) {
+          // Upload GPX par défaut
+          const defaultGpxUrl = '/default.gpx'
+          const response = await fetch(defaultGpxUrl)
+          const blob = await response.blob()
+          finalGpxPath = `uploads/gpx/${user.uid}/${id}-default.gpx`
+          const gpxRef = ref(storage, finalGpxPath)
+          await uploadBytes(gpxRef, blob)
+        } else {
+          finalGpxPath = existingGpx
+        }
       }
 
-      // Upload Images (nouvelles)
+      if (finalGpxPath) {
+        await updateDoc(hikeRef, { gpxPath: finalGpxPath, updatedAt: serverTimestamp() })
+      }
+
+      // ------------------ Images ------------------
       const imageUrls: string[] = []
       for (let i = 0; i < imageFiles.length; i++) {
         const file = imageFiles[i]
@@ -295,7 +324,14 @@ export default function HikeEdit() {
       <div>
         <label className="block font-semibold mb-1">Images</label>
         <div className="flex gap-2 mb-2">
-          <button type="button" onClick={() => imageInputRef.current?.click()} className="bg-gray-200 px-3 py-1 rounded">
+          <button
+            type="button"
+            onClick={() => imageInputRef.current?.click()}
+            className={`bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition cursor-pointer ${
+              imageFiles.length >= 5 ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={imageFiles.length >= 5}
+          >
             Ajouter des images
           </button>
           <input type="file" accept="image/*" multiple className="hidden" ref={imageInputRef} onChange={handleImageChange}/>

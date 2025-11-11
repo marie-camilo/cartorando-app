@@ -3,7 +3,6 @@ import { collection, onSnapshot, DocumentData, QuerySnapshot } from "firebase/fi
 import { db } from "../lib/firebase";
 import Button from "../components/Button";
 import HikeCard from "../components/hikes/HikeCard";
-import { Link } from "react-router-dom";
 
 export default function Home() {
   const [hikes, setHikes] = useState<{ id: string; title: string; difficulty: "easy" | "moderate" | "hard"; region: string, image: string }[]>([]);
@@ -82,7 +81,7 @@ export default function Home() {
                   title={hike.title}
                   difficulty={hike.difficulty as "easy" | "moderate" | "hard"}
                   region={hike.region}
-                  image={hike.image} // Passer l'image de Firebase ici
+                  image={hike.image}
                 />
               ))
             ) : (

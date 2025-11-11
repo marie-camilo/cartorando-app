@@ -67,12 +67,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         if (displayName) await updateProfile(cred.user, { displayName })
 
-        // 🔥 Ajouter un document utilisateur dans Firestore
         await setDoc(doc(db, 'users', cred.user.uid), {
             email,
             displayName: displayName || '',
             createdAt: serverTimestamp(),
-            role: 'user', // Par défaut
+            role: 'user',
         })
 
         return cred.user
