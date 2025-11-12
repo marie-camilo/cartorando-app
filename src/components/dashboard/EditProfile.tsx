@@ -51,6 +51,24 @@ const EditProfile = () => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
+          <label htmlFor="avatar" className="block text-lg font-medium">Avatar</label>
+          {avatar && (
+            <img
+              src={URL.createObjectURL(avatar)}
+              alt="Aperçu avatar"
+              className="w-24 h-24 rounded-full object-cover mb-2"
+            />
+          )}
+          <input
+            id="avatar"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="w-full p-3 border rounded-lg"
+          />
+        </div>
+
+        <div>
           <label htmlFor="displayName" className="block text-lg font-medium">Nom d'utilisateur</label>
           <input
             id="displayName"

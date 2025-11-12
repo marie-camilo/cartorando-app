@@ -32,6 +32,29 @@
     --red: #e15145;
 }
 
+:root {
+    /* === Couleurs principales === */
+    --forest-dark: #2C3E2E;      /* Vert forêt profond - pour textes et headers */
+    --sage: #7A9B76;              /* Sauge - accent principal */
+    --moss: #A8B99C;              /* Mousse - accent secondaire */
+
+    /* === Couleurs neutres === */
+    --stone: #F5F3EF;             /* Pierre claire - background */
+    --sand: #E8E4DD;              /* Sable - surfaces secondaires */
+    --slate: #4A4A4A;             /* Ardoise - textes secondaires */
+
+    /* === Couleurs d'accent === */
+    --terracotta: #D87855;        /* Terre cuite - CTAs et highlights */
+    --sky: #8BB4C9;               /* Ciel - liens et infos */
+    --sunset: #E8A87C;            /* Coucher de soleil - success/warning */
+
+    /* === États et feedback === */
+    --success: #7A9B76;
+    --warning: #E8A87C;
+    --danger: #C85A54;
+    --info: #8BB4C9;
+}
+
 ::selection {
     background-color: var(--green-moss);
     color: white;

@@ -20,7 +20,7 @@ export default function Sidebar({ className = "" }: Props) {
     <aside className={`flex flex-col h-full ${className}`}>
       <div className="flex flex-col items-center gap-3 mb-6">
         <img
-          src={defaultAvatar}
+          src={user?.photoURL || defaultAvatar}
           alt="avatar"
           className="w-24 h-24 rounded-full object-cover"
         />
