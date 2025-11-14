@@ -4,8 +4,10 @@ import { db } from "../lib/firebase";
 import Button from "../components/Button";
 import HikeCard from "../components/hikes/HikeCard";
 import CardStacking from '../components/animations/CardStacking';
-import CircularText from '../components/animations/CircularText';
+import MountainLine from "../components/animations/MountainLine";
+import BackgroundTransition from "../components/animations/BackgroundTransition";
 import SwipeSection from '../components/SwipeSection';
+import ImageGrid from '../components/ImgGrid';
 
 
 export default function Home() {
@@ -44,7 +46,14 @@ export default function Home() {
   const hikesData = [
     { id: 1, title: 'Randonnée 1', image: '/images/hikeur.JPG' },
     { id: 2, title: 'Randonnée 2', image: '/images/mountains.JPG' },
-    { id: 3, title: 'Randonnée 3', image: '/images/cerf.JPG ' },
+    { id: 3, title: 'Randonnée 3', image: '/images/cerf.JPG' },
+  ];
+
+  const hikingImages = [
+    "/images/hikeur.JPG",
+    "/images/mountains.JPG",
+    "/images/cerf.JPG",
+    "/images/hikeur.JPG",
   ];
 
   return (
@@ -76,7 +85,7 @@ export default function Home() {
       </div>
 
       {/*Section Hard Work */}
-      <section className="w-full pt-44 pb-0 bg-sand">
+      <section className="relative w-full pt-44 pb-32 bg-sand z-20">
         <div className="w-full text-slate font-bold uppercase tracking-tight">
           <div className="text-[9vw] leading-none text-right pr-8 md:pr-16">
             we’ve done all
@@ -84,12 +93,28 @@ export default function Home() {
           <div className="text-[9vw] leading-none pl-8 md:pl-16">
             the hard work
           </div>
-          <div className="text-[9vw] leading-none pl-8 md:pl-16">
+          <div className="text-[9vw] leading-none pl-8 md:pl-16 mb-8">
             for you.
           </div>
         </div>
+
+        <p className="text-left text-slate/90 px-8 md:px-16 max-w-2xl text-lg leading-relaxed">
+          Explore routes that have been sorted, tested, and carefully selected for you. We've simplified your preparation so you can focus solely on what matters most: enjoying the adventure.
+        </p>
       </section>
 
+      <MountainLine images={hikingImages} className="relative z-10 -mt-24" />
+      <BackgroundTransition fromColor="#ffffff" toColor="#000000" />
+
+      <section className="h-[100vh] bg-black flex items-center justify-center text-white">
+        <ImageGrid
+          images={[
+            "/images/cerf.JPG",
+            "/images/mountains.JPG",
+            "/images/hikeur.JPG"
+          ]}
+        />
+      </section>
 
       <div className="w-full overflow-hidden">
         <section className="relative bg-gradient-to-b from-slate-50 to-slate-100">
