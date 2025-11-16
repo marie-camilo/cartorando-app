@@ -38,10 +38,12 @@ const EditProfile = () => {
       }
       alert("Profil mis à jour avec succès!");
       navigate("/dashboard");
-    } catch (error) {
-      alert("Erreur lors de la mise à jour du profil: " + error.message);
-    } finally {
-      setLoading(false);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert("Erreur lors de la mise à jour du profil: " + error.message);
+      } else {
+        alert("Erreur lors de la mise à jour du profil");
+      }
     }
   };
 

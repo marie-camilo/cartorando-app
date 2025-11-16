@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 
 export interface StaggeredMenuItem {
@@ -74,6 +74,44 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   const busyRef = useRef(false);
 
   const itemEntranceTweenRef = useRef<gsap.core.Tween | null>(null);
+
+  const sectionColors = [
+    { selector: '.white-section', color: '#000' },
+    { selector: '.black-section', color: '#4A4A4A' }
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const menuBtn = toggleBtnRef.current;
+      if (!menuBtn) return;
+
+      const menuTop = window.scrollY + 16;
+      let appliedColor = menuButtonColor;
+
+      for (const sec of sectionColors) {
+        const el = document.querySelector(sec.selector) as HTMLElement;
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        const top = rect.top + window.scrollY;
+        const bottom = top + rect.height;
+        if (menuTop >= top && menuTop <= bottom) {
+          appliedColor = sec.color;
+          break;
+        }
+      }
+
+      gsap.to(menuBtn, { color: appliedColor, duration: 0.3 });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Triple appel pour garantir l'initialisation
+    handleScroll(); // Immédiat
+    setTimeout(handleScroll, 100); // Après 100ms
+    setTimeout(handleScroll, 500); // Après 500ms (backup)
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [menuButtonColor]);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -385,14 +423,16 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           aria-label="Main navigation header"
         >
           <div className="sm-logo flex items-center select-none pointer-events-auto" aria-label="Logo">
-            <img
-              src={logoUrl || '/src/assets/logos/reactbits-gh-white.svg'}
-              alt="Logo"
-              className="sm-logo-img block h-8 w-auto object-contain"
-              draggable={false}
-              width={110}
-              height={24}
-            />
+            <a href="/">
+              <img
+                src={logoUrl || '/src/assets/logos/reactbits-gh-white.svg'}
+                alt="Logo"
+                className="sm-logo-img block h-8 w-auto object-contain"
+                draggable={false}
+                width={110}
+                height={24}
+              />
+            </a>
           </div>
 
           <button

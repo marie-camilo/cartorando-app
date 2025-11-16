@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { collection, onSnapshot, DocumentData, QuerySnapshot } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import Button from "../components/Button";
 import HikeCard from "../components/hikes/HikeCard";
 import CardStacking from '../components/animations/CardStacking';
 import MountainLine from "../components/animations/MountainLine";
-import BackgroundTransition from "../components/animations/BackgroundTransition";
 import SwipeSection from '../components/SwipeSection';
 import ImageGrid from '../components/ImgGrid';
+import ScrollReveal from '../components/animations/ScrollReveal';
+import HeroSection from '../components/HeroSection';
 
 
 export default function Home() {
@@ -53,67 +53,40 @@ export default function Home() {
     "/images/hikeur.JPG",
     "/images/mountains.JPG",
     "/images/cerf.JPG",
-    "/images/hikeur.JPG",
   ];
 
   return (
-    // Hero section
     <div className="w-full overflow-hidden">
-      <div className="relative w-full h-[100dvh] overflow-hidden">
-        <video className="absolute top-0 left-0 w-full h-full object-cover" autoPlay muted loop playsInline>
-          <source src="/images/home-bg-video.mp4" type="video/mp4" />
-        </video>
+      <HeroSection />
 
-        <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center px-8 sm:px-16">
-          <div
-            className="w-full font-bold uppercase tracking-tight text-[9vw] leading-none"
-            style={{ color: 'var(--sand, #E8E4DD)' }}
+      <MountainLine images={hikingImages} />
+
+      <ImageGrid
+        images={[
+          "/images/cerf.JPG",
+          "/images/mountains.JPG",
+          "/images/hikeur.JPG"
+        ]}
+        fromColor="#F5F3EF"
+        toColor="#000000"
+      />
+
+      <section className="relative min-h-screen bg-black text-white py-20 md:py-40">
+        <div className="pin-container">
+          <ScrollReveal
+            baseOpacity={0}
+            enableBlur={true}
+            baseRotation={0}
+            blurStrength={10}
+            containerClassName="mx-auto px-6 text-left"
           >
-            <div className="text-left">
-              wander
-              <br />
-              far
-            </div>
-            <div className="text-right">
-              and
-              <br />
-              wide
-            </div>
-          </div>
+            Adventure is not found on maps.
+            Adventure is shared between those who wander.
+            Hikee lets you discover trails,
+            deposit your own paths,
+            and explore the unseen corners of nature.
+          </ScrollReveal>
         </div>
-
-      </div>
-
-      {/*Section Hard Work */}
-      <section className="relative w-full pt-44 pb-32 bg-sand z-20">
-        <div className="w-full text-slate font-bold uppercase tracking-tight">
-          <div className="text-[9vw] leading-none text-right pr-8 md:pr-16">
-            we’ve done all
-          </div>
-          <div className="text-[9vw] leading-none pl-8 md:pl-16">
-            the hard work
-          </div>
-          <div className="text-[9vw] leading-none pl-8 md:pl-16 mb-8">
-            for you.
-          </div>
-        </div>
-
-        <p className="text-left text-slate/90 px-8 md:px-16 max-w-2xl text-lg leading-relaxed">
-          Explore routes that have been sorted, tested, and carefully selected for you. We've simplified your preparation so you can focus solely on what matters most: enjoying the adventure.
-        </p>
-      </section>
-
-      <MountainLine images={hikingImages} className="relative z-10 -mt-24" />
-      <BackgroundTransition fromColor="#ffffff" toColor="#000000" />
-
-      <section className="h-[100vh] bg-black flex items-center justify-center text-white">
-        <ImageGrid
-          images={[
-            "/images/cerf.JPG",
-            "/images/mountains.JPG",
-            "/images/hikeur.JPG"
-          ]}
-        />
       </section>
 
       <div className="w-full overflow-hidden">

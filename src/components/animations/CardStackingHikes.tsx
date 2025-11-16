@@ -130,7 +130,9 @@ const CardStacking: React.FC<CardStackingProps> = ({ cards }) => {
             const diffConfig = getDifficultyConfig(card.difficulty);
 
             return (
-              <div key={card.id} ref={el => (cardRefs.current[i] = el)} className="absolute inset-0">
+              <div key={card.id}
+                   ref={el => { cardRefs.current[i] = el; }}
+                   className="absolute inset-0">
                 {i === 0 && (
                   <div className="absolute -top-15 -right-15 z-20">
                     <CircularText

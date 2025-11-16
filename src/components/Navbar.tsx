@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Button from "./Button";
 import { useAuth } from "../firebase/auth";
 import defaultAvatar from '../assets/default_user.png';
 import { HiMenu, HiX } from "react-icons/hi";
