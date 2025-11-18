@@ -92,7 +92,6 @@ Le suivi des tâches et l’organisation du projet sont disponibles sur Trello :
 ├─ public/
 ├─ package.json
 └─ README.md
-
 ```
 
 ---
@@ -103,6 +102,7 @@ Le suivi des tâches et l’organisation du projet sont disponibles sur Trello :
 ```bash
 git clone https://github.com/votre-utilisateur/hikee.git
 cd hikee
+```
 
 prerequisites:
     - Node.js >= 18
