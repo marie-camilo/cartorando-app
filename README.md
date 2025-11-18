@@ -123,8 +123,8 @@ npm run dev
 ```
 ### Scripts
 
-dev: "Lancer le projet en mode développement"
-build: "Construire le projet pour production"
-start: "Lancer le serveur en production"
+- dev: "Lancer le projet en mode développement"
+- build: "Construire le projet pour production"
+- start: "Lancer le serveur en production"
 
 
