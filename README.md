@@ -1,7 +1,7 @@
-# 🗺️ Rando & Bivouac – Cartographie Outdoor
+# Hikee 🌄
 
-Projet full stack permettant de cartographier des **randonnées** et des **spots de bivouac**.  
-Inspiré de sites comme *Altitude Rando*, ce projet est codé avec **Vue.js, Node.js et PostgreSQL/PostGIS**.
+Hikee est une plateforme de **randonnées** qui permet de découvrir, répertorier et gérer des randonnées en France et en Europe. Le site est conçu pour offrir une expérience fluide et immersive grâce à des animations modernes.
+Projet FullStack codé avec **React, TypeScript et Firebase**. 
 
 ---
 
@@ -12,11 +12,6 @@ Inspiré de sites comme *Altitude Rando*, ce projet est codé avec **Vue.js, Nod
 - [ Stack technique](#%EF%B8%8F-stack-technique)  
 - [ Architecture du projet](#-architecture-du-projet)  
 - [ Installation](#-installation)  
-- [ Guide d'utilisation](#-utilisation)  
-- [ Base de données](#%EF%B8%8F-base-de-données)  
-- [ Authentification](#-authentification)  
-- [ Déploiement](#-déploiement)  
-- [ Améliorations futures](#-améliorations-futures)
 
 ---
 
@@ -32,109 +27,107 @@ Le suivi des tâches et l’organisation du projet sont disponibles sur Trello :
 ## Fonctionnalités
 - Carte interactive (Leaflet/Mapbox)  
 - Fiches randonnées : distance, dénivelé, difficulté, photos  
-- Spots bivouacs 🏕️ (coordonnées GPS + infos)  
 - Recherche & filtres (niveau, durée, localisation)  
 - Authentification (création de compte, connexion)  
 - Gestion des favoris ⭐  
 - Ajout de randonnées/bivouacs par les utilisateurs connectés  
-- Back-office admin (validation et modération)  
-- (Bonus) Import de fichiers GPX  
+- Back-office admin (validation et modération)
+- Import de fichiers GPX
 
----
+### Pour les utilisateurs
 
-## Stack technique
-### Frontend
-- [Vue.js 3](https://vuejs.org/) + [Vite](https://vitejs.dev/)  
+- Créer un **compte personnel** et se connecter.  
+- Accéder à un **dashboard personnel** pour gérer ses randonnées :  
+  - CRUD complet (Créer, Lire, Mettre à jour, Supprimer ses randonnées)  
+  - Modifier les informations de son profil  
+  - Changer sa **photo de profil**  
+- Mettre des **randonnées en favoris** pour un accès rapide.  
+- Upload de **plusieurs photos** pour chaque randonnée.  
+- Upload de **tracés GPX** pour suivre les parcours.  
+- Ajouter des **commentaires** et répondre aux commentaires.  
+
+### Espace d'administration
+
+- Gestion complète via un **compte admin** :  
+  - Supprimer ou cacher des randonnées  
+  - Supprimer ou cacher des commentaires  
+
+### Expérience utilisateur
+
+- Interface fluide et moderne, responsive sur tous les devices.  
+- Animations interactives et smooth scrolling avec **GSAP** et **Lenis**.  
+- Filtres brutalisme pour trier les randonnées par **difficulté** et **région**.  
+- Effet **parallax** sur les sections hero pour une immersion visuelle.  
+
+## 🚀 Technologies utilisées
+
+- **Frontend** : React, TypeScript  
+- **Backend / Base de données** : Firebase (Firestore, Authentication, Storage)  
+- **Animations** : GSAP, Lenis (smooth scroll et effets interactifs)  
+- **Styling** : Tailwind CSS
+
+  ### Frontend
+- [React](https://vuejs.org/](https://fr.react.dev/) + [Next.js](https://vitejs.dev/](https://nextjs.org/)
+- [TypeScript]([https://tailwindcss.com/](https://www.typescriptlang.org/))  
 - [TailwindCSS](https://tailwindcss.com/)  
-- [Leaflet.js](https://leafletjs.com/)  
 
 ### Backend
-- [Node.js](https://nodejs.org/) + [Express.js](https://expressjs.com/)  
-- [Prisma](https://www.prisma.io/) (ORM)  
+- [Firebase & Firestore](https://nodejs.org/](https://firebase.google.com/)
 
-### Base de données
-- [PostgreSQL](https://www.postgresql.org/)  
-- [PostGIS](https://postgis.net/)  
-
-### Hébergement
-- Frontend : [Netlify](https://www.netlify.com/) ou [Vercel](https://vercel.com/)  
-- Backend + DB : [Render](https://render.com/) ou [Railway](https://railway.app/)  
+### Animations
+- [GSAP]([https://www.postgresql.org/](https://gsap.com/))  
+- [Lenis]([https://postgis.net/](https://lenis.darkroom.engineering/))  
 
 ---
 
 ## Architecture du projet
 
 ```text
-rando-bivouac/
-├── backend/              # API (Express + Node.js)
-│   ├── src/
-│   │   ├── routes/       # Routes API (hikes, camps, users)
-│   │   ├── controllers/  # Logique métier
-│   │   ├── models/       # Prisma/ORM
-│   │   ├── middleware/   # Auth, erreurs
-│   │   └── index.js      # Entrée serveur
-│   └── package.json
-├── frontend/             # Vue.js (Vite + Tailwind)
-│   ├── src/
-│   │   ├── components/   # UI Components
-│   │   ├── pages/        # Pages (Home, Randos, Profil…)
-│   │   ├── store/        # Pinia/Vuex (état global)
-│   │   └── main.js
-│   └── package.json
-├── database/             # Schéma SQL + migrations
-│   └── schema.sql
-└── README.md
+├─ src/
+│ ├─ components/ # Composants réutilisables (cards, animations, etc.)
+│ ├─ pages/ # Pages principales (HikeList, Dashboard, Admin, etc.)
+│ ├─ lib/ # Configuration Firebase et helpers
+│ ├─ hooks/ # Hooks personnalisés
+│ └─ assets/ # Images, icônes, etc.
+├─ public/
+├─ package.json
+└─ README.md
 
 ```
 
 ---
 
-## Guide d'utilisation
-- Page d’accueil avec carte  
-- Cliquez sur un marqueur → fiche détaillée  
-- Connectez-vous pour ajouter une randonnée/bivouac  
-- Admin : accès au dashboard modération  
+## Installation
 
----
+1. **Cloner le projet**  
+```bash
+git clone https://github.com/votre-utilisateur/hikee.git
+cd hikee
 
-## Base de données
+prerequisites:
+    - Node.js >= 18
+    - npm ou yarn
+    - Compte Firebase avec Firestore et Storage configurés
 
-### Table `users`
-| id | name  | email          | password_hash | role  |
-|----|-------|----------------|---------------|-------|
-| 1  | Alice | alice@mail.com | ...           | user  |
-| 2  | Admin | admin@mail.com | ...           | admin |
+  setup:
+    steps:
+      - step: "Cloner le projet"
+        command: "git clone https://github.com/votre-utilisateur/hikee.git"
+      - step: "Se déplacer dans le dossier du projet"
+        command: "cd hikee"
+      - step: "Installer les dépendances"
+        command: "npm install"
+      - step: "Configurer Firebase"
+        instructions: |
+          - Créer un projet Firebase sur https://console.firebase.google.com/
+          - Ajouter Firestore, Authentication (email/password) et Storage
+          - Copier vos clés Firebase dans src/lib/firebase.ts
+      - step: "Lancer le projet en mode développement"
+        command: "npm run dev"
+      - step: "Accéder au site"
+        url: "http://localhost:3000"
 
-### Table `hikes`
-| id | title       | distance_km | elevation_m | difficulty | geom (PostGIS) |
-|----|------------|-------------|-------------|------------|----------------|
-| 1  | Mont Blanc  | 15          | 1200        | Hard       | POINT(...)     |
-
-### Table `camps`
-| id | name     | description             | geom (PostGIS) |
-|----|----------|------------------------|----------------|
-| 1  | Lac Vert | Bivouac au bord du lac | POINT(...)     |
-
----
-
-## Authentification
-- **JWT** (JSON Web Tokens)  
-- `POST /auth/register` → inscription  
-- `POST /auth/login` → connexion  
-- `GET /me` → profil utilisateur connecté  
-
----
-
-## Déploiement
-- Frontend : Netlify ou Vercel  
-- Backend + DB : Render ou Railway  
-
----
-
-## Améliorations futures
-- Upload de fichiers GPX  
-- Import/export CSV des randonnées  
-- API météo intégrée sur chaque randonnée  
-- Système de commentaires & avis  
-- Application mobile (Vue Native / React Native)  
-
+  scripts:
+    dev: "Lancer le projet en mode développement"
+    build: "Construire le projet pour production"
+    start: "Lancer le serveur en production"
