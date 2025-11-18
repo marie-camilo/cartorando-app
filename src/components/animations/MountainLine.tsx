@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
+import { useImageParallax } from '../../hooks/useParallax';
 gsap.registerPlugin(ScrollTrigger);
 
 interface MountainLineProps {
@@ -42,10 +42,24 @@ const MOBILE_IMAGE_STYLES = [
   { size: 'w-[300px] h-[200px]', offset: '' },
 ];
 
+// Configuration des vitesses de parallax pour chaque image
+const PARALLAX_CONFIGS = [
+  { speed: 45, scale: 1.25 },
+  { speed: 50, scale: 1.2 },
+  { speed: 45, scale: 1.3 },
+];
+
 const MountainLine: React.FC<MountainLineProps> = ({ images }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Parallax refs pour chaque image
+  const parallax0 = useImageParallax(PARALLAX_CONFIGS[0]);
+  const parallax1 = useImageParallax(PARALLAX_CONFIGS[1]);
+  const parallax2 = useImageParallax(PARALLAX_CONFIGS[2]);
+
+  const parallaxRefs = [parallax0, parallax1, parallax2];
 
   /* Responsive */
   useEffect(() => {
@@ -107,26 +121,34 @@ const MountainLine: React.FC<MountainLineProps> = ({ images }) => {
         {images.slice(0, 3).map((src, i) => {
           const style = imageStyles[i % imageStyles.length];
           const stack = ACTIVE_STACKS[i % ACTIVE_STACKS.length];
-          const isLastImage = i === 2; // Dernière image
+          const isLastImage = i === 2;
+          const { containerRef, imageRef } = parallaxRefs[i];
 
           return (
             <div
               key={i}
               data-image-index={i}
               className={`
-        flex relative
-        ${isMobile
+                flex relative
+                ${isMobile
                 ? i % 2 === 0 ? 'justify-start pl-6' : 'justify-end pr-6'
                 : i % 2 === 0 ? 'justify-end pl-24' : 'justify-start pr-24'}
-        ${isLastImage && !isMobile ? '-mb-[600px]' : ''} 
-      `}
+                ${isLastImage && !isMobile ? '-mb-[600px]' : ''} 
+              `}
             >
               <div className="relative">
-                <img
-                  src={src}
-                  alt=""
-                  className={`object-cover rounded-2xl shadow-2xl transition-all duration-500 ${style.size} ${style.offset}`}
-                />
+                {/* Container avec overflow hidden pour le parallax */}
+                <div
+                  ref={!isMobile ? containerRef : null}
+                  className={`overflow-hidden rounded-2xl shadow-2xl ${style.size} ${style.offset}`}
+                >
+                  <img
+                    ref={!isMobile ? imageRef : null}
+                    src={src}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
                 {/* Stack desktop uniquement sur les 2 premières images */}
                 {!isMobile && i < 2 && (
@@ -152,12 +174,12 @@ const MountainLine: React.FC<MountainLineProps> = ({ images }) => {
                             width: stack.SIZE,
                             height: stack.SIZE * 1.25,
                             transform: `
-                      rotate(${random(-stack.ROTATION, stack.ROTATION)}deg)
-                      translate(
-                        ${random(-stack.SPREAD, stack.SPREAD)}px,
-                        ${random(-stack.SPREAD, stack.SPREAD)}px
-                      )
-                    `,
+                              rotate(${random(-stack.ROTATION, stack.ROTATION)}deg)
+                              translate(
+                                ${random(-stack.SPREAD, stack.SPREAD)}px,
+                                ${random(-stack.SPREAD, stack.SPREAD)}px
+                              )
+                            `,
                             top: 0,
                             left: 0,
                             transition: '0.4s ease',

@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import SplitText from './animations/SplitText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -79,15 +80,56 @@ export default function HeroSection() {
             style={{ color: 'var(--sand, #E8E4DD)' }}
           >
             <div className="text-left">
-              wander
+              <SplitText
+                text="wander"
+                tag="span"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                duration={1}
+                delay={80}
+                ease="power2.out"
+                textAlign="left"
+              />
               <br />
-              far
+              <SplitText
+                text="far"
+                tag="span"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                duration={1}
+                delay={80}
+                ease="power2.out"
+                textAlign="left"
+              />
             </div>
             <div className="text-right">
-              and
+              <SplitText
+                text="and"
+                tag="span"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                duration={1}
+                delay={80}
+                ease="power2.out"
+                textAlign="right"
+              />
               <br />
-              wide
+              <SplitText
+                text="wide"
+                tag="span"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                duration={1}
+                delay={80}
+                ease="power2.out"
+                textAlign="right"
+              />
             </div>
+
           </div>
         </div>
       </div>
@@ -99,13 +141,43 @@ export default function HeroSection() {
       >
         <div className="w-full text-slate font-bold uppercase tracking-tight">
           <div className="text-[9vw] leading-none text-right pr-8 md:pr-16">
-            we've done all
+            <SplitText
+              text="we've done all"
+              tag="span"
+              splitType="words"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              duration={1.8}
+              delay={100}
+              ease="power2.out"
+              textAlign="right"
+            />
           </div>
           <div className="text-[9vw] leading-none pl-8 md:pl-16">
-            the hard work
+            <SplitText
+              text="the hard work"
+              tag="span"
+              splitType="words"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              duration={1.8}
+              delay={100}
+              ease="power2.out"
+              textAlign="left"
+            />
           </div>
           <div className="text-[9vw] leading-none pl-8 md:pl-16 mb-6 md:mb-8">
-            for you.
+            <SplitText
+              text="for you."
+              tag="span"
+              splitType="words"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              duration={1.8}
+              delay={100}
+              ease="power2.out"
+              textAlign="left"
+            />
           </div>
         </div>
 

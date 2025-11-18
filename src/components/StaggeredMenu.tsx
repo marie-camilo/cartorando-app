@@ -43,7 +43,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                                                               menuButtonColor = '#fff',
                                                               openMenuButtonColor = '#fff',
                                                               changeMenuColorOnOpen = true,
-                                                              accentColor = '#C46D52',
+                                                              accentColor = '#D87855',
                                                               isFixed = false,
                                                               onMenuOpen,
                                                               onMenuClose,
@@ -77,7 +77,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
   const sectionColors = [
     { selector: '.white-section', color: '#000' },
-    { selector: '.black-section', color: '#4A4A4A' }
+    { selector: '.black-section', color: '#ffffff' }
   ];
 
   useEffect(() => {
@@ -423,17 +423,11 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           aria-label="Main navigation header"
         >
           <div className="sm-logo flex items-center select-none pointer-events-auto" aria-label="Logo">
-            <a href="/">
-              <img
-                src={logoUrl || '/src/assets/logos/reactbits-gh-white.svg'}
-                alt="Logo"
-                className="sm-logo-img block h-8 w-auto object-contain"
-                draggable={false}
-                width={110}
-                height={24}
-              />
+            <a href="/" className="text-[1.8rem] md:text-2xl font-bold tracking-tight text-[#F5F3EF]">
+              hikee.
             </a>
           </div>
+
 
           <button
             ref={toggleBtnRef}
@@ -451,13 +445,13 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
               className="sm-toggle-textWrap relative inline-block h-[1em] overflow-hidden whitespace-nowrap w-[var(--sm-toggle-width,auto)] min-w-[var(--sm-toggle-width,auto)]"
               aria-hidden="true"
             >
-              <span ref={textInnerRef} className="sm-toggle-textInner flex flex-col leading-none">
-                {textLines.map((l, i) => (
-                  <span className="sm-toggle-line block h-[1em] leading-none" key={i}>
-                    {l}
-                  </span>
-                ))}
-              </span>
+<span ref={textInnerRef} className="sm-toggle-textInner flex flex-col font-bold tracking-tight text-[1.1rem] leading-none">
+  {textLines.map((l, i) => (
+    <span className="sm-toggle-line block h-[1em] leading-none" key={i}>
+      {l}
+    </span>
+  ))}
+</span>
             </span>
 
             <span

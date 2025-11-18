@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
+import { useImageParallax } from '../hooks/useParallax';
 gsap.registerPlugin(ScrollTrigger);
 
 interface ImageGridProps {
@@ -23,6 +23,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
   const [hovered, setHovered] = useState(false);
   const [inside, setInside] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [cursorInitialized, setCursorInitialized] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -34,7 +35,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Animation du background : adaptée selon mobile/desktop
+  // Animation du background
   useEffect(() => {
     if (!sectionRef.current) return;
 
@@ -46,11 +47,9 @@ const ImageGrid: React.FC<ImageGridProps> = ({
           backgroundColor: toColor,
           scrollTrigger: {
             trigger: sectionRef.current,
-            // Mobile : fenêtre plus large pour garantir la transition
             start: isMobile ? 'top 70%' : 'top 50%',
             end: isMobile ? 'top 20%' : 'top 20%',
             scrub: 3,
-            // markers: true,
           },
         }
       );
@@ -59,22 +58,55 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     return () => ctx.revert();
   }, [fromColor, toColor, isMobile]);
 
+  // Gestion du curseur custom
   useEffect(() => {
     const container = containerRef.current;
-    if (!container || isMobile) return;
+    const cursor = cursorRef.current;
+    if (!container || !cursor || isMobile) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!cursorRef.current) return;
       const rect = container.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      cursorRef.current.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      cursor.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+
+      // Marquer comme initialisé après le premier mouvement
+      if (!cursorInitialized) {
+        setCursorInitialized(true);
+      }
+    };
+
+    const handleMouseEnter = (e: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      gsap.set(cursor, {
+        x: x,
+        y: y,
+        xPercent: -50,
+        yPercent: -50,
+      });
+
+      setCursorInitialized(true);
+      setInside(true);
     };
 
     container.addEventListener("mousemove", handleMouseMove);
-    return () => container.removeEventListener("mousemove", handleMouseMove);
-  }, [isMobile]);
+    container.addEventListener("mouseenter", handleMouseEnter);
+
+    return () => {
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseenter", handleMouseEnter);
+    };
+  }, [isMobile, cursorInitialized]);
+
+  const parallaxRefs = images.map(() => useImageParallax<HTMLImageElement>({
+    speed: 45,
+    autoScale: true,
+    baseScale: 1.2,
+  }));
 
   return (
     <section
@@ -95,30 +127,34 @@ const ImageGrid: React.FC<ImageGridProps> = ({
           : 'grid-cols-3 h-screen cursor-none'
         }
         `}
-        onMouseEnter={() => !isMobile && setInside(true)}
-        onMouseLeave={() => !isMobile && setInside(false)}
+        onMouseLeave={() => {
+          if (!isMobile) {
+            setInside(false);
+            setCursorInitialized(false);
+          }
+        }}
       >
-        {images.map((src, index) => (
-          <Link
-            key={index}
-            to="/hikes/list"
-            className={isMobile ? 'block' : ''}
-          >
-            <img
-              src={src}
-              alt={`img-${index}`}
-              className={`
-                grid-image w-full object-cover rounded-lg
-                ${isMobile
-                ? 'h-[300px] sm:h-[400px]'
-                : 'h-full'
-              }
-              `}
-              onMouseEnter={() => !isMobile && setHovered(true)}
-              onMouseLeave={() => !isMobile && setHovered(false)}
-            />
-          </Link>
-        ))}
+        {images.map((src, index) => {
+          const parallax = parallaxRefs[index];
+          return (
+            <div
+              ref={parallax.containerRef}
+              key={index}
+              className="relative overflow-hidden rounded-lg"
+            >
+              <div className="inner-wrapper w-full h-full scale-100 will-change-transform">
+                <Link to="/hikes/list" className={isMobile ? 'block' : ''}>
+                  <img
+                    ref={parallax.imageRef}
+                    src={src}
+                    alt={`img-${index}`}
+                    className="w-full h-full object-cover"
+                  />
+                </Link>
+              </div>
+            </div>
+          );
+        })}
 
         {!isMobile && (
           <div
@@ -128,8 +164,12 @@ const ImageGrid: React.FC<ImageGridProps> = ({
               bg-white text-black font-bold text-sm
               rounded-full
               transition-all duration-200 ease-out
-              ${hovered ? "w-24 h-24" : inside ? "w-10 h-10" : "w-0 h-0"}
+              ${hovered ? "w-24 h-24" : inside && cursorInitialized ? "w-10 h-10" : "w-0 h-0"}
             `}
+            style={{
+              // Position initiale hors écran si pas encore initialisé
+              opacity: cursorInitialized ? 1 : 0,
+            }}
           >
             {hovered && "SEE!"}
           </div>

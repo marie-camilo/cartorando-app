@@ -18,7 +18,6 @@
     font-display: swap;
     font-style: italic;
 }
-
 :root {
     --dark: #353326;
     --green-moss: #897E45;
@@ -30,9 +29,10 @@
     --green: #b2b866;
     --yellow: #efb665;
     --red: #e15145;
-}
 
-:root {
+
+
+
     /* === Couleurs principales === */
     --forest-dark: #2C3E2E;
     --sage: #7A9B76;

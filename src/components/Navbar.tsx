@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../firebase/auth";
-import defaultAvatar from '../assets/default_user.png';
-import { HiMenu, HiX } from "react-icons/hi";
 import { useRole } from "../hooks/useRole";
 
 import StaggeredMenu, { StaggeredMenuItem } from './StaggeredMenu';
