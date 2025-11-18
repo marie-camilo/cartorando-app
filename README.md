@@ -102,9 +102,10 @@ cd hikee
 ```
 
 ### Prérequis
-    - Node.js >= 18
-    - npm ou yarn
-    - Compte Firebase avec Firestore et Storage configurés
+
+- Node.js >= 18
+- npm ou yarn
+- Compte Firebase avec Firestore et Storage configurés
 
 ### Installer les dépendances
 ```bash
@@ -121,9 +122,9 @@ npm install
 npm run dev
 ```
 ### Scripts
-```bash
+
 dev: "Lancer le projet en mode développement"
 build: "Construire le projet pour production"
 start: "Lancer le serveur en production"
-```
+
 
