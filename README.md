@@ -3,8 +3,6 @@
 Hikee est une plateforme de **randonnées** qui permet de découvrir, répertorier et gérer des randonnées en France et en Europe. Le site est conçu pour offrir une expérience fluide et immersive grâce à des animations modernes.
 Projet FullStack codé avec **React, TypeScript et Firebase**. 
 
----
-
 ## 📖 Table des matières
 - [📋 Suivi du projet (Trello)](#-suivi-du-projet-trello)
 
@@ -13,7 +11,6 @@ Projet FullStack codé avec **React, TypeScript et Firebase**.
 - [ Architecture du projet](#-architecture-du-projet)  
 - [ Installation](#-installation)  
 
----
 
 ## 📋 Suivi du projet
 
@@ -21,8 +18,6 @@ Le suivi des tâches et l’organisation du projet sont disponibles sur Trello :
 [Trello Board](https://trello.com/b/zuXba9GL/cartorando)
 
 ![Trello Rando & Bivouac](trello-board.png)
-
----
 
 ## Fonctionnalités
 - Carte interactive (Leaflet/Mapbox)  
@@ -78,7 +73,6 @@ Le suivi des tâches et l’organisation du projet sont disponibles sur Trello :
 - [GSAP]([https://www.postgresql.org/](https://gsap.com/))  
 - [Lenis]([https://postgis.net/](https://lenis.darkroom.engineering/))  
 
----
 
 ## Architecture du projet
 
