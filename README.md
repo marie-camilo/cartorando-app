@@ -1,16 +1,18 @@
 # Hikee 🌄
 
-Hikee est une plateforme de **randonnées** qui permet de découvrir, répertorier et gérer des randonnées en France et en Europe. Le site est conçu pour offrir une expérience fluide et immersive grâce à des animations modernes.
-Projet FullStack codé avec **React, TypeScript et Firebase**. 
+Hikee est une plateforme de **randonnées** qui permet de découvrir, répertorier et gérer des randonnées en France et en Europe. Le site est conçu pour offrir une expérience fluide et immersive grâce à des animations modernes.  
+Projet FullStack codé avec **React, TypeScript et Firebase**.
+
+---
 
 ## 📖 Table des matières
-- [📋 Suivi du projet (Trello)](#-suivi-du-projet-trello)
+- [📋 Suivi du projet](#-suivi-du-projet)  
+- [Fonctionnalités](#fonctionnalités)  
+- [Stack technique](#-stack-technique)  
+- [Architecture du projet](#-architecture-du-projet)  
+- [Installation](#-installation)  
 
-- [ Fonctionnalités](#-fonctionnalités)  
-- [ Stack technique](#%EF%B8%8F-stack-technique)  
-- [ Architecture du projet](#-architecture-du-projet)  
-- [ Installation](#-installation)  
-
+---
 
 ## 📋 Suivi du projet
 
@@ -19,27 +21,30 @@ Le suivi des tâches et l’organisation du projet sont disponibles sur Trello :
 
 ![Trello Rando & Bivouac](trello-board.png)
 
+---
+
 ## Fonctionnalités
+
 - Carte interactive (Leaflet/Mapbox)  
 - Fiches randonnées : distance, dénivelé, difficulté, photos  
 - Recherche & filtres (niveau, durée, localisation)  
 - Authentification (création de compte, connexion)  
 - Gestion des favoris ⭐  
 - Ajout de randonnées/bivouacs par les utilisateurs connectés  
-- Back-office admin (validation et modération)
-- Import de fichiers GPX
+- Back-office admin (validation et modération)  
+- Import de fichiers GPX  
 
 ### Pour les utilisateurs
 
-- Créer un **compte personnel** et se connecter.  
+- Créer un **compte personnel** et se connecter  
 - Accéder à un **dashboard personnel** pour gérer ses randonnées :  
   - CRUD complet (Créer, Lire, Mettre à jour, Supprimer ses randonnées)  
   - Modifier les informations de son profil  
   - Changer sa **photo de profil**  
-- Mettre des **randonnées en favoris** pour un accès rapide.  
-- Upload de **plusieurs photos** pour chaque randonnée.  
-- Upload de **tracés GPX** pour suivre les parcours.  
-- Ajouter des **commentaires** et répondre aux commentaires.  
+- Mettre des **randonnées en favoris** pour un accès rapide  
+- Upload de **plusieurs photos** pour chaque randonnée  
+- Upload de **tracés GPX** pour suivre les parcours  
+- Ajouter des **commentaires** et répondre aux commentaires  
 
 ### Espace d'administration
 
@@ -49,40 +54,38 @@ Le suivi des tâches et l’organisation du projet sont disponibles sur Trello :
 
 ### Expérience utilisateur
 
-- Interface fluide et moderne, responsive sur tous les devices.  
-- Animations interactives et smooth scrolling avec **GSAP** et **Lenis**.  
-- Filtres brutalisme pour trier les randonnées par **difficulté** et **région**.  
-- Effet **parallax** sur les sections hero pour une immersion visuelle.  
+- Interface fluide et moderne, responsive sur tous les devices  
+- Animations interactives et smooth scrolling avec **GSAP** et **Lenis**  
+- Filtres brutalistes pour trier les randonnées par **difficulté** et **région**  
+- Effet **parallax** sur les sections hero pour une immersion visuelle  
 
-## 🚀 Technologies utilisées
+---
 
-- **Frontend** : React, TypeScript  
-- **Backend / Base de données** : Firebase (Firestore, Authentication, Storage)  
-- **Animations** : GSAP, Lenis (smooth scroll et effets interactifs)  
-- **Styling** : Tailwind CSS
+## 🚀 Stack technique
 
-  ### Frontend
-- [React](https://vuejs.org/](https://fr.react.dev/) + [Next.js](https://vitejs.dev/](https://nextjs.org/)
-- [TypeScript]([https://tailwindcss.com/](https://www.typescriptlang.org/))  
+### Frontend
+- [React](https://fr.react.dev/) + [Next.js](https://nextjs.org/)  
+- [TypeScript](https://www.typescriptlang.org/)  
 - [TailwindCSS](https://tailwindcss.com/)  
 
 ### Backend
-- [Firebase & Firestore](https://nodejs.org/](https://firebase.google.com/)
+- [Firebase & Firestore](https://firebase.google.com/)  
 
 ### Animations
-- [GSAP]([https://www.postgresql.org/](https://gsap.com/))  
-- [Lenis]([https://postgis.net/](https://lenis.darkroom.engineering/))  
+- [GSAP](https://gsap.com/)  
+- [Lenis](https://lenis.darkroom.engineering/)  
 
+---
 
 ## Architecture du projet
 
 ```text
 ├─ src/
-│ ├─ components/ # Composants réutilisables (cards, animations, etc.)
-│ ├─ pages/ # Pages principales (HikeList, Dashboard, Admin, etc.)
-│ ├─ lib/ # Configuration Firebase et helpers
-│ ├─ hooks/ # Hooks personnalisés
-│ └─ assets/ # Images, icônes, etc.
+│  ├─ components/  # Composants réutilisables (cards, animations, etc.)
+│  ├─ pages/       # Pages principales (HikeList, Dashboard, Admin, etc.)
+│  ├─ lib/         # Configuration Firebase et helpers
+│  ├─ hooks/       # Hooks personnalisés
+│  └─ assets/      # Images, icônes, etc.
 ├─ public/
 ├─ package.json
 └─ README.md
@@ -92,36 +95,35 @@ Le suivi des tâches et l’organisation du projet sont disponibles sur Trello :
 
 ## Installation
 
-1. **Cloner le projet**  
+### Cloner le projet
 ```bash
 git clone https://github.com/votre-utilisateur/hikee.git
 cd hikee
 ```
 
-prerequisites:
+### Prérequis
     - Node.js >= 18
     - npm ou yarn
     - Compte Firebase avec Firestore et Storage configurés
 
-  setup:
-    steps:
-      - step: "Cloner le projet"
-        command: "git clone https://github.com/votre-utilisateur/hikee.git"
-      - step: "Se déplacer dans le dossier du projet"
-        command: "cd hikee"
-      - step: "Installer les dépendances"
-        command: "npm install"
-      - step: "Configurer Firebase"
-        instructions: |
-          - Créer un projet Firebase sur https://console.firebase.google.com/
-          - Ajouter Firestore, Authentication (email/password) et Storage
-          - Copier vos clés Firebase dans src/lib/firebase.ts
-      - step: "Lancer le projet en mode développement"
-        command: "npm run dev"
-      - step: "Accéder au site"
-        url: "http://localhost:3000"
+### Installer les dépendances
+```bash
+npm install 
+```
 
-  scripts:
-    dev: "Lancer le projet en mode développement"
-    build: "Construire le projet pour production"
-    start: "Lancer le serveur en production"
+### Configurer Firebase 
+- Créer un projet Firebase sur https://console.firebase.google.com/
+- Ajouter Firestore, Authentication (email/password) et Storage
+- Copier vos clés Firebase dans src/lib/firebase.ts
+
+### Lancer le projet en mode développement
+```bash
+npm run dev
+```
+### Scripts
+```bash
+dev: "Lancer le projet en mode développement"
+build: "Construire le projet pour production"
+start: "Lancer le serveur en production"
+```
+
