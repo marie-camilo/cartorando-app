@@ -1,4 +1,4 @@
-# Hikee 🌄
+# Hikee 🏔️
 
 Hikee est une plateforme de **randonnées** qui permet de découvrir, répertorier et gérer des randonnées en France et en Europe. Le site est conçu pour offrir une expérience fluide et immersive grâce à des animations modernes.  
 Projet FullStack codé avec **React, TypeScript et Firebase**.
